@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol RecipesDelegate {
+    func getRecipeLabel(_ viewController: IngredientsViewController, recipe: SearchResult)
+}
+
 class IngredientsViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let recipeRepo = RecipeRepositoryImplementation(apiClient: .init(session: .init(configuration: .default)))
+    private let recipeRepo = RecipeRepositoryImplementation()
+    var delegate: RecipesDelegate?
 
     //MARK: - Outlets
     
@@ -41,10 +46,10 @@ class IngredientsViewController: UIViewController {
     @IBAction func didTapSearchButton(_ sender: Any) {
         recipeRepo.getRecipes { (result) in
             switch result {
-            case .success(let recipes):
-                DownloadedRecipes.shared.recipes = recipes.hits
-                
+            case .success(let searchResult):
+                self.sendData(result: searchResult)
             case .failure(_):
+                
                 self.presentAlert(alertTitle: "Error", message: "The recipes download fail.", actionTitle: "OK")
             }
         }
@@ -55,6 +60,7 @@ class IngredientsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ingredientsTextField.clearsOnBeginEditing = true
+        
 
     }
     
@@ -65,9 +71,16 @@ class IngredientsViewController: UIViewController {
     
     //MARK: - Methods
     
-    private func getRecipeLabel(recipe: Recipes) {
+    private func sendData(result: SearchResult) {
+            delegate?.getRecipeLabel(self, recipe: result)
         
     }
+//    private func getRecipeLabel(recipe: SearchResult) {
+//        let recipesResult = recipe.hits
+//        DownloadedRecipes.shared.recipes = recipesResult
+//
+//
+//    }
 
 }
 
@@ -101,3 +114,5 @@ extension IngredientsViewController: UITextFieldDelegate {
         return true
     }
 }
+
+

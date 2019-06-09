@@ -9,29 +9,25 @@
 import Foundation
 
 protocol RecipeRepository {
-    func getRecipes(callback: @escaping (Result<Recipes, Error>) -> Void)
+    func getRecipes(callback: @escaping (Result<SearchResult, Error>) -> Void)
 }
 
 class RecipeRepositoryImplementation: RecipeRepository {
     
-    init(apiClient: APIClient) {
-        self.apiClient = apiClient
-    }
-    
     //MARK: - Properties
     
-    private var apiClient: APIClient
+    private let apiClient = APIClient()
     
     //MARK: - Methods
     
-    func getRecipes(callback: @escaping (Result<Recipes, Error>) -> Void) {
+    func getRecipes(callback: @escaping (Result<SearchResult, Error>) -> Void) {
         apiClient.request { (result) in
             switch result {
             case .success(let data):
                 do {
-                    let recipes = try JSONDecoder().decode(Recipes.self, from: data)
+                    let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
-                        callback(.success(recipes))
+                        callback(.success(searchResult))
                         
                     }
                 } catch {

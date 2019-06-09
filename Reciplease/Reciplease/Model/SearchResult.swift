@@ -10,17 +10,24 @@ import Foundation
 
 
 class DownloadedRecipes {
+    
     static let shared = DownloadedRecipes()
-    var recipes: [Recipe] = []
+    init() {}
+    
+    var recipes: [Recipes] = []
+}
+
+struct SearchResult: Decodable {
+    let hits: [Recipes]
+    
 }
 
 struct Recipes: Decodable {
-    let hits: [Recipe]
-    
+    let recipe: Recipe
 }
 
 struct Recipe: Decodable {
     let label: String
-    let image: Data
-    let ingredientsLines: [String]
+    let ingredientLines: [String]
 }
+

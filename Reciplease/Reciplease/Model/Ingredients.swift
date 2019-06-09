@@ -11,7 +11,8 @@ import Foundation
 class Ingredients {
     
     static let shared = Ingredients()
-    var ingredients: [String] = []
+    init() {}
     
+    var ingredients: [String] = []
 
 }

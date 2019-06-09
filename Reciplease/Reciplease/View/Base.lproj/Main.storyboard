@@ -86,7 +86,7 @@
                                 </variation>
                                 <connections>
                                     <action selector="didTapSearchButton:" destination="Hrz-Ny-xei" eventType="touchUpInside" id="wLO-M8-2ap"/>
-                                    <segue destination="QOH-dL-cDP" kind="show" id="bBI-9N-S3a"/>
+                                    <segue destination="QOH-dL-cDP" kind="show" identifier="sendRecipesSegue" id="bBI-9N-S3a"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9aa-Gr-D2O">
@@ -330,11 +330,11 @@
                         <viewLayoutGuide key="safeArea" id="EBR-9m-vmg"/>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="Q8m-nL-s7m"/>
+                                <exclude reference="ZPx-jJ-zhh"/>
                                 <exclude reference="6RB-Pn-115"/>
                                 <exclude reference="Quu-iS-gqx"/>
                                 <exclude reference="vqk-n5-4d1"/>
-                                <exclude reference="Q8m-nL-s7m"/>
-                                <exclude reference="ZPx-jJ-zhh"/>
                                 <exclude reference="OJd-I8-vLO"/>
                                 <exclude reference="eKC-St-mXD"/>
                                 <exclude reference="Jf2-H5-CGi"/>
@@ -347,11 +347,11 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
+                                <include reference="Q8m-nL-s7m"/>
+                                <include reference="ZPx-jJ-zhh"/>
                                 <include reference="6RB-Pn-115"/>
                                 <include reference="Quu-iS-gqx"/>
                                 <include reference="vqk-n5-4d1"/>
-                                <include reference="Q8m-nL-s7m"/>
-                                <include reference="ZPx-jJ-zhh"/>
                                 <include reference="OJd-I8-vLO"/>
                                 <include reference="eKC-St-mXD"/>
                                 <include reference="Jf2-H5-CGi"/>
@@ -458,6 +458,9 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="recipesTableView" destination="5Fk-gM-zpz" id="Vrl-5Y-pbG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ra-DW-b2n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

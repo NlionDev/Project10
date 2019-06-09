@@ -7,18 +7,13 @@
 //
 
 import Foundation
+import Alamofire
 
 class APIClient {
     
-    init(session: URLSession) {
-        self.session = session
-    }
-    
     //MARK: - Properties
     
-    var session = URLSession(configuration: .default)
-    
-    var url = URL(string: "https://api.edamam.com/search?q=\(ingredients)&app_id=\(appId)&app_key=\(appKey)")
+    var url = URL(string: "https://api.edamam.com/search?q=chicken&app_id=\(appId)&app_key=\(appKey)")
     static let appId = "364d7474"
     static let appKey = "2345daf55ba67a7ddb05aa2b537d97da"
     static var ingredients = Ingredients.shared.ingredients.joined(separator: ",")
@@ -27,22 +22,17 @@ class APIClient {
     
     func request(completion: @escaping (Result<Data, Error>) -> Void) {
         if let urlRequest = url {
-            var request = URLRequest(url: urlRequest)
-            request.httpMethod = "GET"
-            
-            let task = session.dataTask(with: request) { (data, response, error) in
-                if let data = data {
+            AF.request(urlRequest).responseJSON { (response) in
+                if let data = response.data {
                     completion(.success(data))
                     
                 }
-                if let error = error {
+                if let error = response.error {
                     completion(.failure(error))
                     
                     return
                 }
             }
-            
-            task.resume()
         }
     }
 }
