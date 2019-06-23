@@ -7,8 +7,25 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 class RecipesViewController: UIViewController {
+
+    //MARK: - Properties
+    
+    private var recipeRepo = RecipeRepositoryImplementation()
+    var recipes: [Recipes] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.recipesTableView.reloadData()
+                
+            }
+        }
+    }
+    
+    private var imagesURL: [String] = []
+    private var recipesImages: [UIImage] = []
 
     //MARK: - Outlets
     
@@ -16,21 +33,48 @@ class RecipesViewController: UIViewController {
     
     //MARK: - Lifecycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        reloadRecipesTableView()
+    override func awakeFromNib() {
+        super.awakeFromNib()
+       
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "sendRecipesSegue" {
-//            let vc: IngredientsViewController = segue.destination as! IngredientsViewController
-//            vc.delegate = self
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        recipesTableView.dataSource = self
+
+    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Int) {
+//        if segue.identifier == "DetailsSegueFromResults" {
+//            guard let VCDestination = segue.destination as? RecipeDetailsViewController else { return }
+//            VCDestination.recipe = recipes[sender]
+//
 //        }
 //    }
     
     //MARK: - Methods
     
-    func reloadRecipesTableView() {
+    func getImagesURL() {
+        for recipe in recipes {
+            imagesURL.append(recipe.recipe.image)
+        }
+    }
+    
+    func getRecipesImages() {
+        
+        for url in imagesURL {
+            recipeRepo.getImages(url: url) { (result) in
+                switch result {
+                case .success(let image):
+                    
+                    self.recipesImages.append(image)
+                    
+                case .failure(_):
+                    
+                    self.presentAlert(alertTitle: "Error", message: "The Recipes Image download fail", actionTitle: "OK")
+                }
+            }
+        }
         
     }
     
@@ -44,27 +88,27 @@ extension RecipesViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DownloadedRecipes.shared.recipes.count
+        return recipes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipesCell", for: indexPath) as? RecipeTableViewCell else {
+            
             return UITableViewCell()
         }
-
-        let recipe = DownloadedRecipes.shared.recipes
-        cell.configureCell(title: recipe[indexPath.row].recipe.label)
+        
+        let recipesTitle = recipes[indexPath.row].recipe.label
+        let recipesTime = recipes[indexPath.row].recipe.totalTime
+        let recipeImage = UIImage(named: "food")
+        cell.configureCell(title: recipesTitle, time: recipesTime, image: recipeImage!)
 
         return cell
+        
     }
-
 }
 
-extension RecipesViewController: RecipesDelegate {
-    func getRecipeLabel(_ viewController: IngredientsViewController, recipe: SearchResult) {
-        let recipesResult = recipe.hits
-        DownloadedRecipes.shared.recipes = recipesResult
-        
-        reloadRecipesTableView()
+extension RecipesViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 }

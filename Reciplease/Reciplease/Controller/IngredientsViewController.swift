@@ -8,17 +8,14 @@
 
 import UIKit
 
-protocol RecipesDelegate {
-    func getRecipeLabel(_ viewController: IngredientsViewController, recipe: SearchResult)
-}
-
 class IngredientsViewController: UIViewController {
     
     //MARK: - Properties
     
     private let recipeRepo = RecipeRepositoryImplementation()
-    var delegate: RecipesDelegate?
-
+    private var results: [Recipes] = []
+    private var ingredients: [String] = []
+    
     //MARK: - Outlets
     
     @IBOutlet weak var ingredientsTextField: UITextField!
@@ -32,24 +29,26 @@ class IngredientsViewController: UIViewController {
     
     @IBAction func didTapAddButton(_ sender: Any) {
         if let newIngredient = ingredientsTextField.text {
-            Ingredients.shared.ingredients.append(newIngredient)
+            ingredients.append(newIngredient)
             
             ingredientTableView.reloadData()
         }
     }
     
     @IBAction func didTapClearButton(_ sender: Any) {
-        Ingredients.shared.ingredients.removeAll()
+        ingredients.removeAll()
         ingredientTableView.reloadData()
     }
     
     @IBAction func didTapSearchButton(_ sender: Any) {
-        recipeRepo.getRecipes { (result) in
+        let ingredients = joinIngredients()
+        
+        recipeRepo.getRecipes(ingredients: ingredients) { (result) in
             switch result {
             case .success(let searchResult):
-                self.sendData(result: searchResult)
+                self.results = searchResult.hits
+                self.performSegue(withIdentifier: "RecipeSegue", sender: nil)
             case .failure(_):
-                
                 self.presentAlert(alertTitle: "Error", message: "The recipes download fail.", actionTitle: "OK")
             }
         }
@@ -60,7 +59,6 @@ class IngredientsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ingredientsTextField.clearsOnBeginEditing = true
-        
 
     }
     
@@ -69,18 +67,21 @@ class IngredientsViewController: UIViewController {
         ingredientTableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "RecipeSegue" {
+            guard let VCDestination = segue.destination as? RecipesViewController else { return }
+            VCDestination.recipes = results
+            VCDestination.getImagesURL()
+            VCDestination.getRecipesImages()
+        }
+    }
+    
     //MARK: - Methods
     
-    private func sendData(result: SearchResult) {
-            delegate?.getRecipeLabel(self, recipe: result)
-        
+    private func joinIngredients() -> String {
+       let allIngredients = ingredients.joined(separator: ",")
+        return allIngredients
     }
-//    private func getRecipeLabel(recipe: SearchResult) {
-//        let recipesResult = recipe.hits
-//        DownloadedRecipes.shared.recipes = recipesResult
-//
-//
-//    }
 
 }
 
@@ -92,7 +93,7 @@ extension IngredientsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Ingredients.shared.ingredients.count
+        return ingredients.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,10 +101,11 @@ extension IngredientsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let ingredient = Ingredients.shared.ingredients[indexPath.row]
+        let ingredient = ingredients[indexPath.row]
         cell.configureCell(title: ingredient)
         
         return cell
+        
     }
 }
 

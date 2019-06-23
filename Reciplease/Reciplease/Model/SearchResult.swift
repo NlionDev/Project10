@@ -8,15 +8,6 @@
 
 import Foundation
 
-
-class DownloadedRecipes {
-    
-    static let shared = DownloadedRecipes()
-    init() {}
-    
-    var recipes: [Recipes] = []
-}
-
 struct SearchResult: Decodable {
     let hits: [Recipes]
     
@@ -29,5 +20,7 @@ struct Recipes: Decodable {
 struct Recipe: Decodable {
     let label: String
     let ingredientLines: [String]
+    let totalTime: Int
+    let image: String
 }
 
