@@ -9,11 +9,11 @@
 import Foundation
 
 struct SearchResult: Decodable {
-    let hits: [Recipes]
+    let hits: [Hit]
     
 }
 
-struct Recipes: Decodable {
+struct Hit: Decodable {
     let recipe: Recipe
 }
 

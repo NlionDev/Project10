@@ -13,11 +13,16 @@ class IngredientTableViewCell: UITableViewCell {
     //MARK: - Outlets
     
     @IBOutlet weak var ingredientLabel: UILabel!
+    @IBOutlet weak var detailsIngredientsLabel: UILabel!
     
     
     //MARK: - Methods
     
-    func configureCell(title: String) {
+    func configureIngredientsCell(title: String) {
         ingredientLabel.text = "- " + title
+    }
+    
+    func configureDetailsIngredientsCell(title: String) {
+        detailsIngredientsLabel.text = "- " + title
     }
 }

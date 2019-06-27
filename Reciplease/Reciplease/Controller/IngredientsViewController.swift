@@ -13,7 +13,7 @@ class IngredientsViewController: UIViewController {
     //MARK: - Properties
     
     private let recipeRepo = RecipeRepositoryImplementation()
-    private var results: [Recipes] = []
+    private var results: [Hit] = []
     private var ingredients: [String] = []
     
     //MARK: - Outlets
@@ -71,8 +71,6 @@ class IngredientsViewController: UIViewController {
         if segue.identifier == "RecipeSegue" {
             guard let VCDestination = segue.destination as? RecipesViewController else { return }
             VCDestination.recipes = results
-            VCDestination.getImagesURL()
-            VCDestination.getRecipesImages()
         }
     }
     
@@ -102,7 +100,7 @@ extension IngredientsViewController: UITableViewDataSource {
         }
         
         let ingredient = ingredients[indexPath.row]
-        cell.configureCell(title: ingredient)
+        cell.configureIngredientsCell(title: ingredient)
         
         return cell
         

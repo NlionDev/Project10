@@ -15,7 +15,7 @@ class RecipesViewController: UIViewController {
     //MARK: - Properties
     
     private var recipeRepo = RecipeRepositoryImplementation()
-    var recipes: [Recipes] = [] {
+    var recipes: [Hit] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.recipesTableView.reloadData()
@@ -24,8 +24,7 @@ class RecipesViewController: UIViewController {
         }
     }
     
-    private var imagesURL: [String] = []
-    private var recipesImages: [UIImage] = []
+    var selectedRecipe: Recipe?
 
     //MARK: - Outlets
     
@@ -44,45 +43,22 @@ class RecipesViewController: UIViewController {
 
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Int) {
-//        if segue.identifier == "DetailsSegueFromResults" {
-//            guard let VCDestination = segue.destination as? RecipeDetailsViewController else { return }
-//            VCDestination.recipe = recipes[sender]
-//
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailsSegueFromResults" {
+            guard let VCDestination = segue.destination as? RecipeDetailsViewController,
+            let selectedRecipe = selectedRecipe else { return }
+            VCDestination.recipe = selectedRecipe
+        }
+    }
     
     //MARK: - Methods
-    
-    func getImagesURL() {
-        for recipe in recipes {
-            imagesURL.append(recipe.recipe.image)
-        }
-    }
-    
-    func getRecipesImages() {
-        
-        for url in imagesURL {
-            recipeRepo.getImages(url: url) { (result) in
-                switch result {
-                case .success(let image):
-                    
-                    self.recipesImages.append(image)
-                    
-                case .failure(_):
-                    
-                    self.presentAlert(alertTitle: "Error", message: "The Recipes Image download fail", actionTitle: "OK")
-                }
-            }
-        }
-        
-    }
     
 }
 
 //MARK: - Extensions
 
 extension RecipesViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -99,8 +75,8 @@ extension RecipesViewController: UITableViewDataSource {
         
         let recipesTitle = recipes[indexPath.row].recipe.label
         let recipesTime = recipes[indexPath.row].recipe.totalTime
-        let recipeImage = UIImage(named: "food")
-        cell.configureCell(title: recipesTitle, time: recipesTime, image: recipeImage!)
+        let recipeImageURLString = recipes[indexPath.row].recipe.image
+        cell.configureCell(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
 
         return cell
         
@@ -110,5 +86,7 @@ extension RecipesViewController: UITableViewDataSource {
 extension RecipesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedRecipe = recipes[indexPath.row].recipe
+        performSegue(withIdentifier: "DetailsSegueFromResults", sender: self)
     }
 }
