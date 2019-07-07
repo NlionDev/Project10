@@ -34,9 +34,11 @@ class RecipeTableViewCell: UITableViewCell {
         let cookingTime = String(time)
         favoriteRecipeLabel.text = title
         favoriteCookingTimeLabel.text = cookingTime + "min"
-        favoriteRecipeImage.image = UIImage(imageLiteralResourceName: "food")
+        
 //        if let url = URL(string: imageURLString) {
 //            recipeImage.af_setImage(withURL: url, placeholderImage: UIImage(named: "food"))
 //        }
+            favoriteRecipeImage.image = UIImage(imageLiteralResourceName: "food")
+        
     }
 }

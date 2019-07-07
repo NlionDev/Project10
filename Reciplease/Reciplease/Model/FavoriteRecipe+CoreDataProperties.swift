@@ -17,9 +17,9 @@ extension FavoriteRecipe {
         return NSFetchRequest<FavoriteRecipe>(entityName: "FavoriteRecipe")
     }
 
-    @NSManaged public var name: String?
-    @NSManaged public var cookingTime: Int16
-    @NSManaged public var imageURLString: String?
-    @NSManaged public var ingredients: [String]?
+    @NSManaged public var label: String?
+    @NSManaged public var totalTime: Int16
+    @NSManaged public var image: String?
+    @NSManaged public var ingredientLines: [String]?
 
 }

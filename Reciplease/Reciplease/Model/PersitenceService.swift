@@ -65,15 +65,3 @@ class PersistenceService {
 
 }
 
-extension UIViewController {
-    func makeFetchRequest() {
-        let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
-        do {
-            let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
-            FavoritesRecipes.shared.favoritesRecipes = favoritesRecipes
-        } catch {
-            
-        }
-    }
-
-}

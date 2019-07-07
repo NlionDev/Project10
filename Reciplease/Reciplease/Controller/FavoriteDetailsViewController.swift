@@ -1,76 +1,82 @@
 //
-//  RecipeDetailsViewController.swift
+//  FavoriteDetailsViewController.swift
 //  Reciplease
 //
-//  Created by Nicolas Lion on 30/05/2019.
+//  Created by Nicolas Lion on 28/06/2019.
 //  Copyright © 2019 Nicolas Lion. All rights reserved.
 //
 
 import UIKit
-import AlamofireImage
 
-class RecipeDetailsViewController: UIViewController {
+class FavoriteDetailsViewController: UIViewController {
 
+    
     // MARK: - Properties
     
-    var recipe: Recipe!
+    var selectedFavoriteRecipe: FavoriteRecipe!
     var favoriteRecipes: [FavoriteRecipe] = []
     let favoriteRecipesRepo = FavoriteRecipesRepositoryImplementation()
     
+    
     // MARK: - Outlets
     
-    @IBOutlet weak private var timeLabel: UILabel!
-    @IBOutlet weak private var recipeImageView: UIImageView!
-    @IBOutlet weak private var detailsRecipeTableView: UITableView!
-    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak var cookingTimeLabel: UILabel!
+    @IBOutlet weak var recipeTitleLabel: UILabel!
+    @IBOutlet weak var recipeImageView: UIImageView!
+    @IBOutlet weak var favoriteDetailsTableView: UITableView!
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getFavoriteRecipes()
-        configurePage()
-        setupStarButton(title: "Reciplease", action: #selector(didTapOnStarButton))
-        configureStarButtonColor()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        DispatchQueue.main.async {
+            self.favoriteDetailsTableView.reloadData()
+            self.configurePage()
+            self.setupStarButton(title: "Reciplease", action: #selector(self.didTapOnStarButton))
+            self.configureStarButtonColor()
+        }
     }
     
     // MARK: - Actions
     
+    @IBAction func didTapOnButton(_ sender: Any) {
+        
+    
+    }
+    
     @objc private func didTapOnStarButton() {
         if checkIfIsFavorites() {
-            removeRecipeOfFavorites()
+            let index = getIndexForFavoriteRecipe()
+            let recipe = favoriteRecipes[index]
+            favoriteRecipesRepo.removeRecipeOfFavorites(recipe: recipe)
         } else {
-            favoriteRecipesRepo.addRecipeToFavoriteFromDetails(recipe: recipe)
-            getFavoriteRecipes()
+            favoriteRecipesRepo.addRecipeToFavoriteFromFavorite(recipe: selectedFavoriteRecipe)
         }
         configureStarButtonColor()
     }
     
-    
     // MARK: - Methods
     
-    private func getFavoriteRecipes() {
-        favoriteRecipes = favoriteRecipesRepo.makeFetchRequest()
-    }
-    
     private func configurePage() {
-        let cookingTime = String(recipe.totalTime)
-        if let url = URL(string: recipe.image) {
-            timeLabel.text = cookingTime + "min"
+        let cookingTime = String(selectedFavoriteRecipe.totalTime)
+        guard let image = selectedFavoriteRecipe.image else { return }
+        if let url = URL(string: image) {
+            cookingTimeLabel.text = cookingTime + "min"
             recipeImageView.af_setImage(withURL: url, placeholderImage: nil)
-            titleLabel.text = recipe.label
-            detailsRecipeTableView.reloadData()
+            recipeTitleLabel.text = selectedFavoriteRecipe.label
+            favoriteDetailsTableView.reloadData()
         }
     }
     
     func checkIfIsFavorites() -> Bool {
         var result = false
         for favoriteRecipe in favoriteRecipes {
-            if favoriteRecipe.label == recipe.label {
+            if favoriteRecipe.label == selectedFavoriteRecipe.label {
                 result = true
             }
         }
@@ -81,7 +87,7 @@ class RecipeDetailsViewController: UIViewController {
         var index = 0
         for favoriteRecipe in favoriteRecipes {
             index += 1
-            if favoriteRecipe.label == recipe.label {
+            if favoriteRecipe.label == selectedFavoriteRecipe.label {
                 index -= 1
                 break
             }
@@ -97,43 +103,36 @@ class RecipeDetailsViewController: UIViewController {
         }
     }
     
-    func removeRecipeOfFavorites() {
-        let index = getIndexForFavoriteRecipe()
-        let recipe = favoriteRecipes[index]
-        PersistenceService.context.delete(recipe)
-        PersistenceService.saveContext()
-    }
 
-    
 }
 
-
-// MARK: - Extensions
-
-extension RecipeDetailsViewController: UITableViewDataSource {
+extension FavoriteDetailsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recipe.ingredientLines.count
+       guard let ingredients = selectedFavoriteRecipe.ingredientLines  else { return 0 }
+        return ingredients.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailsIngredientsCell", for: indexPath) as? IngredientTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsFavoritesCell", for: indexPath) as? IngredientTableViewCell else {
             
             return UITableViewCell()
         }
         
-        let ingredient = recipe.ingredientLines[indexPath.row]
+        if let ingredients = selectedFavoriteRecipe.ingredientLines {
+            let ingredient = ingredients[indexPath.row]
             cell.configureDetailsIngredientsCell(title: ingredient)
+        }
         
         return cell
         
     }
 }
 
-extension RecipeDetailsViewController {
+extension FavoriteDetailsViewController {
     
     func setupStarButton(title: String, action: Selector) {
         self.navigationController?.navigationBar.topItem?.title = ""

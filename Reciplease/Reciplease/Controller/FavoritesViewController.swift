@@ -8,9 +8,14 @@
 
 import UIKit
 import AlamofireImage
-import CoreData
 
 class FavoritesViewController: UIViewController {
+    
+    // MARK: - Properties
+    
+    var selectedRecipe: FavoriteRecipe?
+    var favoriteRecipes: [FavoriteRecipe] = []
+    let favoriteRecipeRepo = FavoriteRecipesRepositoryImplementation()
 
     // MARK: - Outlets
     
@@ -21,27 +26,42 @@ class FavoritesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        makeFetchRequest()
-        favoriteTableView.reloadData()
-        showFavoritesLabel()
+        DispatchQueue.main.async {
+            self.getFavoriteRecipes()
+            self.favoriteTableView.reloadData()
+            self.showFavoritesLabel()
+        }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailsSegueFromFavorites" {
+            guard let VCDestination = segue.destination as? FavoriteDetailsViewController,
+                let selectedRecipe = selectedRecipe else { return }
+            VCDestination.selectedFavoriteRecipe = selectedRecipe
+            VCDestination.favoriteRecipes = favoriteRecipes
+        }
     }
     
     // MARK: - Methods
     
     private func showFavoritesLabel() {
-        if FavoritesRecipes.shared.favoritesRecipes.isEmpty {
+        if favoriteRecipes.isEmpty {
             favoriteTableView.isHidden = true
             favoritesLabel.isHidden = false
         } else {
             favoritesLabel.isHidden = true
             favoriteTableView.isHidden = false
         }
+    }
+    
+    private func getFavoriteRecipes() {
+        favoriteRecipes = favoriteRecipeRepo.makeFetchRequest()
     }
     
     
@@ -56,7 +76,7 @@ extension FavoritesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FavoritesRecipes.shared.favoritesRecipes.count
+        return favoriteRecipes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -65,14 +85,32 @@ extension FavoritesViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let recipesTitle = FavoritesRecipes.shared.favoritesRecipes[indexPath.row].name
-        let recipesTime = FavoritesRecipes.shared.favoritesRecipes[indexPath.row].cookingTime
-        let recipeImageURLString = FavoritesRecipes.shared.favoritesRecipes[indexPath.row].imageURLString
+        let recipesTitle = favoriteRecipes[indexPath.row].label
+        let recipesTime = favoriteRecipes[indexPath.row].totalTime
+        let recipeImageURLString = favoriteRecipes[indexPath.row].image
         if let recipesTitle = recipesTitle,
             let recipeImageURLString = recipeImageURLString {
             cell.configureFavoriteCell(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
         }
         return cell
         
+    }
+}
+
+extension FavoritesViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedRecipe = favoriteRecipes[indexPath.row]
+        
+        performSegue(withIdentifier: "DetailsSegueFromFavorites", sender: self)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            favoriteRecipeRepo.removeRecipeOfFavorites(recipe: favoriteRecipes[indexPath.row])
+            PersistenceService.saveContext()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.reloadData()
+        }
     }
 }
