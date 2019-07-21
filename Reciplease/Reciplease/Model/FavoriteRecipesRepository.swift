@@ -10,16 +10,15 @@ import Foundation
 import CoreData
 
 protocol FavoriteRecipesRepository {
-    func makeFetchRequest() -> [FavoriteRecipe]
+    func getFavoriteRecipes() -> [FavoriteRecipe]
     func addRecipeToFavoriteFromDetails(recipe: Recipe)
     func addRecipeToFavoriteFromFavorite(recipe: FavoriteRecipe)
     func removeRecipeOfFavorites(recipe: FavoriteRecipe)
-    func deleteAll(recipes: [FavoriteRecipe])
 }
 
 class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
-    func makeFetchRequest() -> [FavoriteRecipe] {
+    func getFavoriteRecipes() -> [FavoriteRecipe] {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
@@ -52,13 +51,6 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
     func removeRecipeOfFavorites(recipe: FavoriteRecipe) {
         PersistenceService.context.delete(recipe)
-        PersistenceService.saveContext()
-    }
-    
-    func deleteAll(recipes: [FavoriteRecipe]) {
-        for recipe in recipes {
-            PersistenceService.context.delete(recipe)
-        }
         PersistenceService.saveContext()
     }
 }

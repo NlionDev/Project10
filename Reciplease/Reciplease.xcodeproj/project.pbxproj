@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0324A1C622D2521E00BA5D43 /* Ingredient+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324A1C422D2521E00BA5D43 /* Ingredient+CoreDataClass.swift */; };
+		0324A1C722D2521E00BA5D43 /* Ingredient+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324A1C522D2521E00BA5D43 /* Ingredient+CoreDataProperties.swift */; };
+		0324A1C922D2524B00BA5D43 /* IngredientsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324A1C822D2524B00BA5D43 /* IngredientsRepository.swift */; };
 		0330CB2422C0D10B00232507 /* PersitenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2322C0D10B00232507 /* PersitenceService.swift */; };
 		0330CB2722C361A800232507 /* FavoriteRecipe+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2522C361A800232507 /* FavoriteRecipe+CoreDataClass.swift */; };
 		0330CB2822C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2622C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift */; };
@@ -53,6 +56,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0324A1C422D2521E00BA5D43 /* Ingredient+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ingredient+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0324A1C522D2521E00BA5D43 /* Ingredient+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ingredient+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0324A1C822D2524B00BA5D43 /* IngredientsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRepository.swift; sourceTree = "<group>"; };
 		0330CB2322C0D10B00232507 /* PersitenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersitenceService.swift; sourceTree = "<group>"; };
 		0330CB2522C361A800232507 /* FavoriteRecipe+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRecipe+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0330CB2622C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRecipe+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -178,11 +184,14 @@
 		03B8DCB022A00929004340C1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0324A1C522D2521E00BA5D43 /* Ingredient+CoreDataProperties.swift */,
+				0324A1C422D2521E00BA5D43 /* Ingredient+CoreDataClass.swift */,
 				0330CB2522C361A800232507 /* FavoriteRecipe+CoreDataClass.swift */,
 				0330CB2622C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift */,
 				03B8DCC322A0328C004340C1 /* SearchResult.swift */,
 				03B8DCC722A0466C004340C1 /* RecipeRepository.swift */,
 				039ECC7D22CA492C00FC4464 /* FavoriteRecipesRepository.swift */,
+				0324A1C822D2524B00BA5D43 /* IngredientsRepository.swift */,
 				0330CB2322C0D10B00232507 /* PersitenceService.swift */,
 			);
 			path = Model;
@@ -458,6 +467,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0324A1C922D2524B00BA5D43 /* IngredientsRepository.swift in Sources */,
 				03B8DC8822A00910004340C1 /* Reciplease.xcdatamodeld in Sources */,
 				03B8DCC822A0466C004340C1 /* RecipeRepository.swift in Sources */,
 				03B8DCBE22A02F71004340C1 /* RecipesViewController.swift in Sources */,
@@ -472,6 +482,8 @@
 				0330CB2722C361A800232507 /* FavoriteRecipe+CoreDataClass.swift in Sources */,
 				03B8DCB622A013E0004340C1 /* ButtonsView.swift in Sources */,
 				0330CB2E22C5FDC000232507 /* FavoriteDetailsViewController.swift in Sources */,
+				0324A1C722D2521E00BA5D43 /* Ingredient+CoreDataProperties.swift in Sources */,
+				0324A1C622D2521E00BA5D43 /* Ingredient+CoreDataClass.swift in Sources */,
 				039ECC8622CA6BAD00FC4464 /* CookingTimeView.swift in Sources */,
 				0330CB2A22C3752900232507 /* FavoritesViewController.swift in Sources */,
 				03B8DC8022A00910004340C1 /* AppDelegate.swift in Sources */,

@@ -14,7 +14,7 @@ class RecipesViewController: UIViewController {
 
     //MARK: - Properties
     
-    private var recipeRepo = RecipeRepositoryImplementation()
+    private var recipeRepository = RecipeRepositoryImplementation()
     var recipes: [Hit] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -24,18 +24,13 @@ class RecipesViewController: UIViewController {
         }
     }
     
-    var selectedRecipe: Recipe?
+    private var selectedRecipe: Recipe?
 
     //MARK: - Outlets
     
-    @IBOutlet weak var recipesTableView: UITableView!
+    @IBOutlet weak private var recipesTableView: UITableView!
     
     //MARK: - Lifecycle
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-       
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +40,9 @@ class RecipesViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "DetailsSegueFromResults" {
-            guard let VCDestination = segue.destination as? RecipeDetailsViewController,
+            guard let destination = segue.destination as? RecipeDetailsViewController,
             let selectedRecipe = selectedRecipe else { return }
-            VCDestination.recipe = selectedRecipe
+            destination.recipe = selectedRecipe
         }
     }
     
@@ -59,9 +54,6 @@ class RecipesViewController: UIViewController {
 
 extension RecipesViewController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count

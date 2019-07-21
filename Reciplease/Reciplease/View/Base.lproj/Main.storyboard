@@ -139,13 +139,13 @@
                                                     <exclude reference="lSk-tP-yzn"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <exclude reference="JN6-Di-t5f"/>
+                                                    <exclude reference="Tek-c0-SqX"/>
+                                                    <exclude reference="sIe-Ad-y5R"/>
                                                     <exclude reference="Owq-wb-ZZ2"/>
                                                     <exclude reference="ede-VP-EIk"/>
                                                     <exclude reference="rtV-vO-tn7"/>
                                                     <exclude reference="sY7-GY-EYD"/>
-                                                    <exclude reference="JN6-Di-t5f"/>
-                                                    <exclude reference="Tek-c0-SqX"/>
-                                                    <exclude reference="sIe-Ad-y5R"/>
                                                     <exclude reference="beC-eS-gFp"/>
                                                     <exclude reference="dL7-69-mZZ"/>
                                                     <exclude reference="gX4-tU-GAG"/>
@@ -158,13 +158,13 @@
                                                     <include reference="lSk-tP-yzn"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <include reference="JN6-Di-t5f"/>
+                                                    <include reference="Tek-c0-SqX"/>
+                                                    <include reference="sIe-Ad-y5R"/>
                                                     <include reference="Owq-wb-ZZ2"/>
                                                     <include reference="ede-VP-EIk"/>
                                                     <include reference="rtV-vO-tn7"/>
                                                     <include reference="sY7-GY-EYD"/>
-                                                    <include reference="JN6-Di-t5f"/>
-                                                    <include reference="Tek-c0-SqX"/>
-                                                    <include reference="sIe-Ad-y5R"/>
                                                     <exclude reference="beC-eS-gFp"/>
                                                     <include reference="dL7-69-mZZ"/>
                                                     <exclude reference="gX4-tU-GAG"/>
@@ -789,6 +789,7 @@
                                 </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="Hrz-Ny-xei" id="gQo-OD-dyc"/>
+                                    <outlet property="delegate" destination="Hrz-Ny-xei" id="Ww8-Fm-2uF"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -914,7 +915,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bV1-mt-qeV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="149.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="150" id="FRG-CN-HgZ"/>
                                                     </constraints>
@@ -970,7 +971,7 @@
                                                     </variation>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recipes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fC-9r-mH2">
-                                                    <rect key="frame" x="8" y="115.5" width="85" height="26.5"/>
+                                                    <rect key="frame" x="8" y="115" width="85" height="26.5"/>
                                                     <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -1281,6 +1282,7 @@
                                 <exclude reference="RBT-bM-qRY"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="8L7-U7-ZQB"/>
                                 <exclude reference="8We-aT-iDp"/>
                                 <exclude reference="HA2-No-eiZ"/>
                                 <exclude reference="Z0z-jK-f0c"/>
@@ -1288,7 +1290,6 @@
                                 <exclude reference="rat-CO-zWU"/>
                                 <exclude reference="SG4-6p-ar9"/>
                                 <exclude reference="gcn-aG-dR5"/>
-                                <exclude reference="8L7-U7-ZQB"/>
                                 <exclude reference="sR8-bq-UOJ"/>
                                 <exclude reference="atJ-tM-uA7"/>
                                 <exclude reference="bti-gR-eCX"/>
@@ -1304,6 +1305,7 @@
                                 <include reference="RBT-bM-qRY"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="8L7-U7-ZQB"/>
                                 <include reference="8We-aT-iDp"/>
                                 <include reference="HA2-No-eiZ"/>
                                 <include reference="Z0z-jK-f0c"/>
@@ -1311,7 +1313,6 @@
                                 <include reference="rat-CO-zWU"/>
                                 <include reference="SG4-6p-ar9"/>
                                 <include reference="gcn-aG-dR5"/>
-                                <include reference="8L7-U7-ZQB"/>
                                 <include reference="sR8-bq-UOJ"/>
                                 <include reference="atJ-tM-uA7"/>
                                 <include reference="bti-gR-eCX"/>

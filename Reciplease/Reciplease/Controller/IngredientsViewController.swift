@@ -13,14 +13,16 @@ class IngredientsViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let recipeRepo = RecipeRepositoryImplementation()
+    private let recipeRepository = RecipeRepositoryImplementation()
+    private let ingredientRepository = IngredientsRepositoryImplementation()
     private var results: [Hit] = []
-    private var ingredients: [String] = []
+    private var ingredients: [Ingredient] = []
+    private var ingredientsName: [String] = []
     
     //MARK: - Outlets
     
-    @IBOutlet weak var ingredientsTextField: UITextField!
-    @IBOutlet weak var ingredientTableView: UITableView!
+    @IBOutlet weak private var ingredientsTextField: UITextField!
+    @IBOutlet weak private var ingredientTableView: UITableView!
     
     //MARK: - Actions
 
@@ -29,22 +31,22 @@ class IngredientsViewController: UIViewController {
     }
     
     @IBAction func didTapAddButton(_ sender: Any) {
-        if let newIngredient = ingredientsTextField.text {
-            ingredients.append(newIngredient)
-            
+        if let newIngredientName = ingredientsTextField.text {
+            ingredientRepository.saveIngredient(name: newIngredientName)
+            self.getIngredients()
             ingredientTableView.reloadData()
         }
     }
     
     @IBAction func didTapClearButton(_ sender: Any) {
-        ingredients.removeAll()
+        ingredientsName.removeAll()
         ingredientTableView.reloadData()
     }
     
     @IBAction func didTapSearchButton(_ sender: Any) {
         let ingredients = joinIngredients()
         
-        recipeRepo.getRecipes(ingredients: ingredients) { (result) in
+        recipeRepository.getRecipes(ingredients: ingredients) { (result) in
             switch result {
             case .success(let searchResult):
                 self.results = searchResult.hits
@@ -65,6 +67,7 @@ class IngredientsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        getIngredients()
         ingredientTableView.reloadData()
     }
     
@@ -78,21 +81,22 @@ class IngredientsViewController: UIViewController {
     //MARK: - Methods
     
     private func joinIngredients() -> String {
-       let allIngredients = ingredients.joined(separator: ",")
+       let allIngredients = ingredientsName.joined(separator: ",")
         return allIngredients
     }
-
+    
+    private func getIngredients() {
+        ingredientsName = ingredientRepository.makeFetchRequestForNames()
+        ingredients = ingredientRepository.makeFetchRequestForIngredients()
+    }
 }
 
 //MARK: - Extensions
 
 extension IngredientsViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ingredients.count
+        return ingredientsName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,11 +104,22 @@ extension IngredientsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let ingredient = ingredients[indexPath.row]
+        let ingredient = ingredientsName[indexPath.row]
         cell.configureIngredientsCell(title: ingredient)
         
         return cell
         
+    }
+}
+
+extension IngredientsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            ingredientRepository.removeIngredient(ingredient: ingredients[indexPath.row])
+            PersistenceService.saveContext()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.reloadData()
+        }
     }
 }
 

@@ -15,7 +15,7 @@ class RecipeDetailsViewController: UIViewController {
     
     var recipe: Recipe!
     var favoriteRecipes: [FavoriteRecipe] = []
-    let favoriteRecipesRepo = FavoriteRecipesRepositoryImplementation()
+    private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation()
     
     // MARK: - Outlets
     
@@ -28,15 +28,12 @@ class RecipeDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getFavoriteRecipes()
+        self.favoriteRecipes = self.favoriteRecipesRepository.getFavoriteRecipes()
         configurePage()
         setupStarButton(title: "Reciplease", action: #selector(didTapOnStarButton))
         configureStarButtonColor()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-    }
     
     // MARK: - Actions
     
@@ -44,18 +41,14 @@ class RecipeDetailsViewController: UIViewController {
         if checkIfIsFavorites() {
             removeRecipeOfFavorites()
         } else {
-            favoriteRecipesRepo.addRecipeToFavoriteFromDetails(recipe: recipe)
-            getFavoriteRecipes()
+            favoriteRecipesRepository.addRecipeToFavoriteFromDetails(recipe: recipe)
+            favoriteRecipes = favoriteRecipesRepository.getFavoriteRecipes()
         }
         configureStarButtonColor()
     }
     
     
     // MARK: - Methods
-    
-    private func getFavoriteRecipes() {
-        favoriteRecipes = favoriteRecipesRepo.makeFetchRequest()
-    }
     
     private func configurePage() {
         let cookingTime = String(recipe.totalTime)
@@ -111,9 +104,6 @@ class RecipeDetailsViewController: UIViewController {
 // MARK: - Extensions
 
 extension RecipeDetailsViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipe.ingredientLines.count

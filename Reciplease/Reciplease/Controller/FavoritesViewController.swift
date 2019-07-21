@@ -13,38 +13,30 @@ class FavoritesViewController: UIViewController {
     
     // MARK: - Properties
     
-    var selectedRecipe: FavoriteRecipe?
-    var favoriteRecipes: [FavoriteRecipe] = []
-    let favoriteRecipeRepo = FavoriteRecipesRepositoryImplementation()
+    private var selectedRecipe: FavoriteRecipe?
+    private var favoriteRecipes: [FavoriteRecipe] = []
+    private let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation()
 
     // MARK: - Outlets
     
-    @IBOutlet weak var favoriteTableView: UITableView!
-    @IBOutlet weak var favoritesLabel: UILabel!
+    @IBOutlet weak private var favoriteTableView: UITableView!
+    @IBOutlet weak private var favoritesLabel: UILabel!
     
     // MARK: - Lifecycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        DispatchQueue.main.async {
-            self.getFavoriteRecipes()
+            self.favoriteRecipes = self.favoriteRecipeRepository.getFavoriteRecipes()
             self.favoriteTableView.reloadData()
             self.showFavoritesLabel()
-        }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "DetailsSegueFromFavorites" {
-            guard let VCDestination = segue.destination as? FavoriteDetailsViewController,
+            guard let destination = segue.destination as? FavoriteDetailsViewController,
                 let selectedRecipe = selectedRecipe else { return }
-            VCDestination.selectedFavoriteRecipe = selectedRecipe
-            VCDestination.favoriteRecipes = favoriteRecipes
+            destination.selectedFavoriteRecipe = selectedRecipe
+            destination.favoriteRecipes = favoriteRecipes
         }
     }
     
@@ -60,20 +52,11 @@ class FavoritesViewController: UIViewController {
         }
     }
     
-    private func getFavoriteRecipes() {
-        favoriteRecipes = favoriteRecipeRepo.makeFetchRequest()
-    }
-    
-    
 }
 
 // MARK: - Extension
 
 extension FavoritesViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favoriteRecipes.count
@@ -107,8 +90,9 @@ extension FavoritesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            favoriteRecipeRepo.removeRecipeOfFavorites(recipe: favoriteRecipes[indexPath.row])
+            favoriteRecipeRepository.removeRecipeOfFavorites(recipe: favoriteRecipes[indexPath.row])
             PersistenceService.saveContext()
+            favoriteRecipes = favoriteRecipeRepository.getFavoriteRecipes()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.reloadData()
         }

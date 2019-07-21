@@ -15,22 +15,18 @@ class FavoriteDetailsViewController: UIViewController {
     
     var selectedFavoriteRecipe: FavoriteRecipe!
     var favoriteRecipes: [FavoriteRecipe] = []
-    let favoriteRecipesRepo = FavoriteRecipesRepositoryImplementation()
+    private let favoriteRecipesRepo = FavoriteRecipesRepositoryImplementation()
     
     
     // MARK: - Outlets
     
-    @IBOutlet weak var cookingTimeLabel: UILabel!
-    @IBOutlet weak var recipeTitleLabel: UILabel!
-    @IBOutlet weak var recipeImageView: UIImageView!
-    @IBOutlet weak var favoriteDetailsTableView: UITableView!
+    @IBOutlet weak private var cookingTimeLabel: UILabel!
+    @IBOutlet weak private var recipeTitleLabel: UILabel!
+    @IBOutlet weak private var recipeImageView: UIImageView!
+    @IBOutlet weak private var favoriteDetailsTableView: UITableView!
     
     // MARK: - Lifecycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -43,11 +39,6 @@ class FavoriteDetailsViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
-    @IBAction func didTapOnButton(_ sender: Any) {
-        
-    
-    }
     
     @objc private func didTapOnStarButton() {
         if checkIfIsFavorites() {
@@ -73,7 +64,7 @@ class FavoriteDetailsViewController: UIViewController {
         }
     }
     
-    func checkIfIsFavorites() -> Bool {
+    private func checkIfIsFavorites() -> Bool {
         var result = false
         for favoriteRecipe in favoriteRecipes {
             if favoriteRecipe.label == selectedFavoriteRecipe.label {
@@ -83,7 +74,7 @@ class FavoriteDetailsViewController: UIViewController {
         return result
     }
     
-    func getIndexForFavoriteRecipe() -> Int {
+    private func getIndexForFavoriteRecipe() -> Int {
         var index = 0
         for favoriteRecipe in favoriteRecipes {
             index += 1
@@ -95,7 +86,7 @@ class FavoriteDetailsViewController: UIViewController {
         return index
     }
     
-    func configureStarButtonColor() {
+    private func configureStarButtonColor() {
         if checkIfIsFavorites() {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2650679648, green: 0.5823817849, blue: 0.364438206, alpha: 1)
         } else {
@@ -103,13 +94,17 @@ class FavoriteDetailsViewController: UIViewController {
         }
     }
     
+    private func setupStarButton(title: String, action: Selector) {
+        self.navigationController?.navigationBar.topItem?.title = ""
+        self.navigationItem.title = title
+        let starButton = UIBarButtonItem(image: #imageLiteral(resourceName: "whitestar"), style: .plain, target: self, action: action)
+        self.navigationItem.rightBarButtonItem = starButton
+    }
+    
 
 }
 
 extension FavoriteDetailsViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        guard let ingredients = selectedFavoriteRecipe.ingredientLines  else { return 0 }
@@ -118,10 +113,8 @@ extension FavoriteDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsFavoritesCell", for: indexPath) as? IngredientTableViewCell else {
-            
             return UITableViewCell()
         }
-        
         if let ingredients = selectedFavoriteRecipe.ingredientLines {
             let ingredient = ingredients[indexPath.row]
             cell.configureDetailsIngredientsCell(title: ingredient)
@@ -132,12 +125,3 @@ extension FavoriteDetailsViewController: UITableViewDataSource {
     }
 }
 
-extension FavoriteDetailsViewController {
-    
-    func setupStarButton(title: String, action: Selector) {
-        self.navigationController?.navigationBar.topItem?.title = ""
-        self.navigationItem.title = title
-        let starButton = UIBarButtonItem(image: #imageLiteral(resourceName: "whitestar"), style: .plain, target: self, action: action)
-        self.navigationItem.rightBarButtonItem = starButton
-    }
-}
