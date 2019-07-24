@@ -73,7 +73,7 @@ extension FavoritesViewController: UITableViewDataSource {
         let recipeImageURLString = favoriteRecipes[indexPath.row].image
         if let recipesTitle = recipesTitle,
             let recipeImageURLString = recipeImageURLString {
-            cell.configureFavoriteCell(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
+            cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
         }
         return cell
         

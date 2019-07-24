@@ -68,7 +68,7 @@ extension RecipesViewController: UITableViewDataSource {
         let recipesTitle = recipes[indexPath.row].recipe.label
         let recipesTime = recipes[indexPath.row].recipe.totalTime
         let recipeImageURLString = recipes[indexPath.row].recipe.image
-        cell.configureCell(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
+        cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
 
         return cell
         
