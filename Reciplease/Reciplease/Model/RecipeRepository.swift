@@ -11,8 +11,7 @@ import Alamofire
 import AlamofireImage
 
 protocol RecipeRepository {
-    func getRecipes(ingredients: String, callback: @escaping (Result<SearchResult, Error>) -> Void)
-    func recipesRequest(ingredients: String, completion: @escaping (Result<Data, Error>) -> Void)
+    func getRecipes(ingredients: String, completion: @escaping (Result<Recipe, Error>) -> Void)
 }
 
 class RecipeRepositoryImplementation: RecipeRepository {
@@ -21,45 +20,31 @@ class RecipeRepositoryImplementation: RecipeRepository {
     
     private let appId = "364d7474"
     private let appKey = "2345daf55ba67a7ddb05aa2b537d97da"
+    private let baseURL = "https://api.edamam.com/"
     
     //MARK: - Methods
     
-    func recipesRequest(ingredients: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        let url = URL(string: "https://api.edamam.com/search?q=\(ingredients)&app_id=\(appId)&app_key=\(appKey)")
+    func getRecipes(ingredients: String, completion: @escaping (Result<Recipe, Error>) -> Void) {
+        let searchPath = String.init(format: "search?q=%@&app_id=%@&app_key=%@","\(ingredients)", "\(appId)", "\(appKey)")
+        let url = URL(string: "\(baseURL)\(searchPath)")
         
-        if let urlRequest = url {
-            AF.request(urlRequest).responseJSON { (response) in
-                if let data = response.data {
-                    completion(.success(data))
-                    
-                }
-                if let error = response.error {
-                    completion(.failure(error))
-                    return
-                }
-            }
-        }
-    }
-
-    
-    func getRecipes(ingredients: String, callback: @escaping (Result<SearchResult, Error>) -> Void) {
-        recipesRequest(ingredients: ingredients) { (result) in
-            switch result {
-            case .success(let data):
+        guard let urlRequest = url else { return }
+        
+        AF.request(urlRequest).responseJSON { (response) in
+            if let data = response.data {
                 do {
                     let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
-                        callback(.success(searchResult))
-                        
+                        completion(.success(searchResult.hits.map
+                            { $0.recipe }))
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        callback(.failure(error))
+                        completion(.failure(error))
                     }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    callback(.failure(error))
+                    if let error = response.error {
+                        completion(.failure(error))
+                    }
                 }
             }
         }
