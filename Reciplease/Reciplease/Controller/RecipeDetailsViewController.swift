@@ -14,8 +14,8 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: - Properties
     
     var recipe: Recipe!
-    var favoriteRecipes: [FavoriteRecipe] = []
     private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation()
+    private var isFav = true
     
     // MARK: - Outlets
     
@@ -28,7 +28,7 @@ class RecipeDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.favoriteRecipes = self.favoriteRecipesRepository.getFavoriteRecipes()
+        self.isFav = (favoriteRecipesRepository.getFavoriteRecipe(by: recipe.uri) != nil)
         configurePage()
         setupStarButton(title: "Reciplease", action: #selector(didTapOnStarButton))
         configureStarButtonColor()
@@ -38,11 +38,10 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func didTapOnStarButton() {
-        if checkIfIsFavorites() {
-            removeRecipeOfFavorites()
+        if isFav {
+            favoriteRecipesRepository.removeRecipe(by: recipe.uri)
         } else {
-            favoriteRecipesRepository.addRecipeToFavoriteFromDetails(recipe: recipe)
-            favoriteRecipes = favoriteRecipesRepository.getFavoriteRecipes()
+            favoriteRecipesRepository.addRecipeToFavorite(totalTime: recipe.totalTime, image: recipe.image, label: recipe.label, ingredientLines: recipe.ingredientLines, uri: recipe.uri)
         }
         configureStarButtonColor()
     }
@@ -60,43 +59,13 @@ class RecipeDetailsViewController: UIViewController {
         }
     }
     
-    func checkIfIsFavorites() -> Bool {
-        var result = false
-        for favoriteRecipe in favoriteRecipes {
-            if favoriteRecipe.label == recipe.label {
-                result = true
-            }
-        }
-        return result
-    }
-    
-    func getIndexForFavoriteRecipe() -> Int {
-        var index = 0
-        for favoriteRecipe in favoriteRecipes {
-            index += 1
-            if favoriteRecipe.label == recipe.label {
-                index -= 1
-                break
-            }
-        }
-        return index
-    }
-    
     func configureStarButtonColor() {
-        if checkIfIsFavorites() {
+        if isFav {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2650679648, green: 0.5823817849, blue: 0.364438206, alpha: 1)
         } else {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
-    
-    func removeRecipeOfFavorites() {
-        let index = getIndexForFavoriteRecipe()
-        let recipe = favoriteRecipes[index]
-        PersistenceService.context.delete(recipe)
-        PersistenceService.saveContext()
-    }
-
     
 }
 

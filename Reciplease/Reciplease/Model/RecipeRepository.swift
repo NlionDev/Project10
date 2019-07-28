@@ -35,8 +35,7 @@ class RecipeRepositoryImplementation: RecipeRepository {
                 do {
                     let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
-                        completion(.success(searchResult.hits.map
-                            { $0.recipe }))
+                        completion(.success(searchResult.hits.map { $0.recipe }))
                     }
                 } catch {
                     DispatchQueue.main.async {

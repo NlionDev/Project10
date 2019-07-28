@@ -14,9 +14,8 @@ class FavoriteDetailsViewController: UIViewController {
     // MARK: - Properties
     
     var selectedFavoriteRecipe: FavoriteRecipe!
-    var favoriteRecipes: [FavoriteRecipe] = []
-    private let favoriteRecipesRepo = FavoriteRecipesRepositoryImplementation()
-    
+    private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation()
+    private var isFav = true
     
     // MARK: - Outlets
     
@@ -32,6 +31,9 @@ class FavoriteDetailsViewController: UIViewController {
         super.viewWillAppear(true)
         DispatchQueue.main.async {
             self.favoriteDetailsTableView.reloadData()
+            if let uri = self.selectedFavoriteRecipe.uri {
+                self.isFav = (self.favoriteRecipesRepository.getFavoriteRecipe(by: uri) != nil)
+            }
             self.configurePage()
             self.setupStarButton(title: "Reciplease", action: #selector(self.didTapOnStarButton))
             self.configureStarButtonColor()
@@ -41,12 +43,17 @@ class FavoriteDetailsViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func didTapOnStarButton() {
-        if checkIfIsFavorites() {
-            let index = getIndexForFavoriteRecipe()
-            let recipe = favoriteRecipes[index]
-            favoriteRecipesRepo.removeRecipeOfFavorites(recipe: recipe)
+        if isFav {
+            if let ID = selectedFavoriteRecipe.uri {
+                favoriteRecipesRepository.removeRecipe(by: ID)
+            }
         } else {
-            favoriteRecipesRepo.addRecipeToFavoriteFromFavorite(recipe: selectedFavoriteRecipe)
+            if let image = selectedFavoriteRecipe.image,
+                let label = selectedFavoriteRecipe.label,
+                let ingredientLines = selectedFavoriteRecipe.ingredientLines,
+                let uri = selectedFavoriteRecipe.uri {
+                favoriteRecipesRepository.addRecipeToFavorite(totalTime: selectedFavoriteRecipe.totalTime, image: image, label: label, ingredientLines: ingredientLines, uri: uri)
+            }
         }
         configureStarButtonColor()
     }
@@ -64,30 +71,8 @@ class FavoriteDetailsViewController: UIViewController {
         }
     }
     
-    private func checkIfIsFavorites() -> Bool {
-        var result = false
-        for favoriteRecipe in favoriteRecipes {
-            if favoriteRecipe.label == selectedFavoriteRecipe.label {
-                result = true
-            }
-        }
-        return result
-    }
-    
-    private func getIndexForFavoriteRecipe() -> Int {
-        var index = 0
-        for favoriteRecipe in favoriteRecipes {
-            index += 1
-            if favoriteRecipe.label == selectedFavoriteRecipe.label {
-                index -= 1
-                break
-            }
-        }
-        return index
-    }
-    
     private func configureStarButtonColor() {
-        if checkIfIsFavorites() {
+        if isFav {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 0.2650679648, green: 0.5823817849, blue: 0.364438206, alpha: 1)
         } else {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)

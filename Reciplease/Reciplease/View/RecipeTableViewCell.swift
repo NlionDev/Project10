@@ -12,12 +12,9 @@ class RecipeTableViewCell: UITableViewCell {
 
     //MARK: - Outlets
     
-    @IBOutlet weak var recipeImage: UIImageView!
-    @IBOutlet weak var recipesLabel: UILabel!
-    @IBOutlet weak var cookingTimeLabel: UILabel!
-//    @IBOutlet weak var favoriteCookingTimeLabel: UILabel!
-//    @IBOutlet weak var favoriteRecipeLabel: UILabel!
-//    @IBOutlet weak var favoriteRecipeImage: UIImageView!
+    @IBOutlet weak private var recipeImage: UIImageView!
+    @IBOutlet weak private var recipesLabel: UILabel!
+    @IBOutlet weak private var cookingTimeLabel: UILabel!
     
     //MARK: - Methods
     
@@ -29,16 +26,5 @@ class RecipeTableViewCell: UITableViewCell {
             recipeImage.af_setImage(withURL: url, placeholderImage: UIImage(named: "food"))
         }
     }
-    
-//    func configureFavoriteCell(title: String, time: Int, imageURLString: String) {
-//        let cookingTime = String(time)
-//        favoriteRecipeLabel.text = title
-//        favoriteCookingTimeLabel.text = cookingTime + "min"
-//
-//        if let url = URL(string: imageURLString) {
-//            recipeImage.af_setImage(withURL: url, placeholderImage: UIImage(named: "food"))
-//        }
-//            favoriteRecipeImage.image = UIImage(imageLiteralResourceName: "food")
-//
-//    }
+
 }

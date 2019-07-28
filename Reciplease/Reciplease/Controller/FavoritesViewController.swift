@@ -36,7 +36,6 @@ class FavoritesViewController: UIViewController {
             guard let destination = segue.destination as? FavoriteDetailsViewController,
                 let selectedRecipe = selectedRecipe else { return }
             destination.selectedFavoriteRecipe = selectedRecipe
-            destination.favoriteRecipes = favoriteRecipes
         }
     }
     
@@ -90,11 +89,13 @@ extension FavoritesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            favoriteRecipeRepository.removeRecipeOfFavorites(recipe: favoriteRecipes[indexPath.row])
-            PersistenceService.saveContext()
-            favoriteRecipes = favoriteRecipeRepository.getFavoriteRecipes()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.reloadData()
+            if let uri = favoriteRecipes[indexPath.row].uri {
+                favoriteRecipeRepository.removeRecipe(by: uri)
+                PersistenceService.saveContext()
+                favoriteRecipes = favoriteRecipeRepository.getFavoriteRecipes()
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadData()
+            }
         }
     }
 }

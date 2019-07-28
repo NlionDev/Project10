@@ -5,12 +5,13 @@
         <attribute name="ingredientLines" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalTime" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uri" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Ingredient" representedClassName="Ingredient" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="FavoriteRecipe" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="FavoriteRecipe" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="Ingredient" positionX="-63" positionY="9" width="128" height="60"/>
     </elements>
 </model>
