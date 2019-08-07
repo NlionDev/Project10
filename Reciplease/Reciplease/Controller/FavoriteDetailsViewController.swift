@@ -117,7 +117,7 @@ extension FavoriteDetailsViewController: UITableViewDataSource {
         }
         if let ingredients = selectedFavoriteRecipe.ingredientLines {
             let ingredient = ingredients[indexPath.row]
-            cell.configureDetailsIngredientsCell(title: ingredient)
+            cell.configure(title: ingredient)
         }
         
         return cell

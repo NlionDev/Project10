@@ -15,13 +15,13 @@ class RecipeTableViewCell: UITableViewCell {
     @IBOutlet weak var recipeImage: UIImageView!
     @IBOutlet weak var recipesLabel: UILabel!
     @IBOutlet weak var cookingTimeLabel: UILabel!
-    @IBOutlet weak var favoriteCookingTimeLabel: UILabel!
-    @IBOutlet weak var favoriteRecipeLabel: UILabel!
-    @IBOutlet weak var favoriteRecipeImage: UIImageView!
+//    @IBOutlet weak var favoriteCookingTimeLabel: UILabel!
+//    @IBOutlet weak var favoriteRecipeLabel: UILabel!
+//    @IBOutlet weak var favoriteRecipeImage: UIImageView!
     
     //MARK: - Methods
     
-    func configureCell(title: String, time: Int, imageURLString: String) {
+    func configure(title: String, time: Int, imageURLString: String) {
         let cookingTime = String(time)
         recipesLabel.text = title
         cookingTimeLabel.text = cookingTime + "min"
@@ -30,15 +30,15 @@ class RecipeTableViewCell: UITableViewCell {
         }
     }
     
-    func configureFavoriteCell(title: String, time: Int16, imageURLString: String) {
-        let cookingTime = String(time)
-        favoriteRecipeLabel.text = title
-        favoriteCookingTimeLabel.text = cookingTime + "min"
-        
+//    func configureFavoriteCell(title: String, time: Int, imageURLString: String) {
+//        let cookingTime = String(time)
+//        favoriteRecipeLabel.text = title
+//        favoriteCookingTimeLabel.text = cookingTime + "min"
+//
 //        if let url = URL(string: imageURLString) {
 //            recipeImage.af_setImage(withURL: url, placeholderImage: UIImage(named: "food"))
 //        }
-            favoriteRecipeImage.image = UIImage(imageLiteralResourceName: "food")
-        
-    }
+//            favoriteRecipeImage.image = UIImage(imageLiteralResourceName: "food")
+//
+//    }
 }

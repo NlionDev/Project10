@@ -105,7 +105,7 @@ extension IngredientsViewController: UITableViewDataSource {
         }
         
         let ingredient = ingredientsName[indexPath.row]
-        cell.configureIngredientsCell(title: ingredient)
+        cell.configure(title: ingredient)
         
         return cell
         

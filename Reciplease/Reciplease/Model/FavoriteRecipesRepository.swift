@@ -32,7 +32,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
     func addRecipeToFavoriteFromDetails(recipe: Recipe) {
         let favoriteRecipe = FavoriteRecipe(context: PersistenceService.context)
-        favoriteRecipe.totalTime = Int16(recipe.totalTime)
+        favoriteRecipe.totalTime = recipe.totalTime
         favoriteRecipe.image = recipe.image
         favoriteRecipe.label = recipe.label
         favoriteRecipe.ingredientLines = recipe.ingredientLines
@@ -41,7 +41,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
     func addRecipeToFavoriteFromFavorite(recipe: FavoriteRecipe) {
         let favoriteRecipe = FavoriteRecipe(context: PersistenceService.context)
-        favoriteRecipe.totalTime = Int16(recipe.totalTime)
+        favoriteRecipe.totalTime = recipe.totalTime
         favoriteRecipe.image = recipe.image
         favoriteRecipe.label = recipe.label
         favoriteRecipe.ingredientLines = recipe.ingredientLines
