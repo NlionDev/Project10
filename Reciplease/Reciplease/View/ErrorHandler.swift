@@ -11,9 +11,6 @@ import UIKit
 
 extension UIViewController {
     
-    enum DownloadError {
-        case DownloadFailed
-    }
     
     func presentAlert(alertTitle: String, message: String, actionTitle: String) {
         let alertVC = UIAlertController(title: alertTitle, message: message, preferredStyle: .alert)
@@ -21,10 +18,23 @@ extension UIViewController {
         present(alertVC, animated: true, completion: nil)
     }
     
-    private func presentError(_ error: DownloadError) {
+    func displayIngredientError(_ error: IngredientRequestError) {
         switch error {
-        case .DownloadFailed:
-            presentAlert(alertTitle: "Loading Failed.", message: "The Favorite Recipes loading failed", actionTitle: "OK")
+        case .requestForIngredientsNamesError:
+            presentAlert(alertTitle: "Error", message: "Can not retrieve the ingredient names", actionTitle: "OK")
+        case .requestForIngredientsError:
+            presentAlert(alertTitle: "Error", message: "Impossible to recover the ingredients", actionTitle: "OK")
         }
     }
+    func displayFavoriteRecipeError(_ error: FavoriteRecipeRequestError) {
+        switch error {
+        case .requestForFavoriteRecipesError:
+            presentAlert(alertTitle: "Error", message: "Can not retrieve the Favorite Recipes", actionTitle: "OK")
+        case .requestForGettingRecipeByUriError:
+            presentAlert(alertTitle: "Error", message: "Impossible to recover the Favorite Recipe", actionTitle: "OK")
+        case .removingRecipeError:
+            presentAlert(alertTitle: "Error", message: "Impossible to remove this Recipe", actionTitle: "OK")
+        }
+    }
+
 }

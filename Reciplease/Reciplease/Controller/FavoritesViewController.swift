@@ -26,7 +26,13 @@ class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-            self.favoriteRecipes = self.favoriteRecipeRepository.getFavoriteRecipes()
+          do {
+           self.favoriteRecipes = try self.favoriteRecipeRepository.getFavoriteRecipes()
+        } catch let error as FavoriteRecipeRequestError {
+            self.displayFavoriteRecipeError(error)
+          } catch {
+            self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+        }
             self.favoriteTableView.reloadData()
             self.showFavoritesLabel()
     }
@@ -90,9 +96,23 @@ extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let uri = favoriteRecipes[indexPath.row].uri {
-                favoriteRecipeRepository.removeRecipe(by: uri)
+                do {
+                try favoriteRecipeRepository.removeRecipe(by: uri)
+                } catch let error as FavoriteRecipeRequestError {
+                    displayFavoriteRecipeError(error)
+                } catch {
+                    self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+                }
+                
                 PersistenceService.saveContext()
-                favoriteRecipes = favoriteRecipeRepository.getFavoriteRecipes()
+                
+                do {
+                favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes()
+                } catch let error as FavoriteRecipeRequestError {
+                    displayFavoriteRecipeError(error)
+                } catch {
+                    self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+                }
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 tableView.reloadData()
             }

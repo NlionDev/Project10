@@ -10,16 +10,21 @@ import Foundation
 import CoreData
 
 protocol IngredientsRepository {
-    func makeFetchRequestForNames() -> [String]
-    func makeFetchRequestForIngredients() -> [Ingredient]
+    func makeFetchRequestForNames() throws -> [String]
+    func makeFetchRequestForIngredients() throws -> [Ingredient]
     func saveIngredient(name: String)
     func removeIngredient(ingredient: Ingredient)
 }
 
+enum IngredientRequestError: Error {
+    case requestForIngredientsNamesError
+    case requestForIngredientsError
+
+}
 
 class IngredientsRepositoryImplementation: IngredientsRepository {
     
-    func makeFetchRequestForNames() -> [String] {
+    func makeFetchRequestForNames() throws -> [String] {
         var ingredients: [String] = []
         let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
         do {
@@ -30,19 +35,19 @@ class IngredientsRepositoryImplementation: IngredientsRepository {
                 }
             }
         } catch {
-            
+            throw IngredientRequestError.requestForIngredientsNamesError
         }
         return ingredients
     }
     
-    func makeFetchRequestForIngredients() -> [Ingredient] {
+    func makeFetchRequestForIngredients() throws -> [Ingredient] {
         var ingredients: [Ingredient] = []
         let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
         do {
             let savedIngredients = try PersistenceService.context.fetch(fetchRequest)
             ingredients = savedIngredients
         } catch {
-            
+            throw IngredientRequestError.requestForIngredientsError
         }
         return ingredients
     }

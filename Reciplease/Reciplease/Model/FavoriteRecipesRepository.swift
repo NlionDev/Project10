@@ -11,42 +11,48 @@ import CoreData
 import UIKit
 
 protocol FavoriteRecipesRepository {
-    func getFavoriteRecipes() -> [FavoriteRecipe]
-    func getFavoriteRecipe(by uri: String) -> FavoriteRecipe?
+    func getFavoriteRecipes() throws -> [FavoriteRecipe]
+    func getFavoriteRecipe(by uri: String) throws-> FavoriteRecipe?
     func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String)
-    func removeRecipe(by uri: String)
+    func removeRecipe(by uri: String) throws
+}
+
+enum FavoriteRecipeRequestError: Error {
+    case requestForFavoriteRecipesError
+    case requestForGettingRecipeByUriError
+    case removingRecipeError
+    
 }
 
 class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
-    func getFavoriteRecipes() -> [FavoriteRecipe] {
+    func getFavoriteRecipes() throws -> [FavoriteRecipe] {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
             let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
             favorites = favoritesRecipes
         } catch {
-            
+            throw FavoriteRecipeRequestError.requestForFavoriteRecipesError
         }
+        
         return favorites
     }
     
-    func getFavoriteRecipe(by uri: String) -> FavoriteRecipe? {
-        var favorites: [FavoriteRecipe] = []
+    func getFavoriteRecipe(by uri: String) throws -> FavoriteRecipe? {
         var favoriteRecipe: FavoriteRecipe?
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
             let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
-            favorites = favoritesRecipes
-            for recipe in favorites {
-                if recipe.uri == uri {
-                    favoriteRecipe = recipe
-                }
+            favoriteRecipe = favoritesRecipes.first { favoriteRecipe -> Bool in
+                favoriteRecipe.uri == uri
             }
         } catch {
-            
+            throw FavoriteRecipeRequestError.requestForGettingRecipeByUriError
         }
+        
         return favoriteRecipe
+        
     }
     
     func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String) {
@@ -61,7 +67,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
 
     
     
-    func removeRecipe(by uri: String) {
+    func removeRecipe(by uri: String) throws {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
@@ -74,7 +80,8 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
                 }
             }
         } catch {
-            
+            throw FavoriteRecipeRequestError.removingRecipeError
         }
+        
     }
 }

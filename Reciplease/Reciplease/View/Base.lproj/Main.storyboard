@@ -870,12 +870,12 @@
                                 <exclude reference="reQ-eo-Xun"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="6RB-Pn-115"/>
-                                <exclude reference="Quu-iS-gqx"/>
-                                <exclude reference="vqk-n5-4d1"/>
                                 <exclude reference="8n9-lD-PWJ"/>
                                 <exclude reference="Q8m-nL-s7m"/>
                                 <exclude reference="ZPx-jJ-zhh"/>
+                                <exclude reference="6RB-Pn-115"/>
+                                <exclude reference="Quu-iS-gqx"/>
+                                <exclude reference="vqk-n5-4d1"/>
                                 <exclude reference="OJd-I8-vLO"/>
                                 <exclude reference="eKC-St-mXD"/>
                                 <exclude reference="Jf2-H5-CGi"/>
@@ -883,11 +883,11 @@
                                 <exclude reference="wdp-gk-zk7"/>
                                 <exclude reference="Y6U-oe-qTI"/>
                                 <exclude reference="qq7-x2-dzH"/>
-                                <exclude reference="CHI-Ae-hKC"/>
-                                <exclude reference="eOR-SG-HOm"/>
                                 <exclude reference="EMZ-9u-zwC"/>
                                 <exclude reference="bUi-Xv-6PY"/>
                                 <exclude reference="iQm-Ue-keI"/>
+                                <exclude reference="CHI-Ae-hKC"/>
+                                <exclude reference="eOR-SG-HOm"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -895,12 +895,12 @@
                                 <include reference="reQ-eo-Xun"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="6RB-Pn-115"/>
-                                <include reference="Quu-iS-gqx"/>
-                                <include reference="vqk-n5-4d1"/>
                                 <include reference="8n9-lD-PWJ"/>
                                 <exclude reference="Q8m-nL-s7m"/>
                                 <include reference="ZPx-jJ-zhh"/>
+                                <include reference="6RB-Pn-115"/>
+                                <include reference="Quu-iS-gqx"/>
+                                <include reference="vqk-n5-4d1"/>
                                 <include reference="OJd-I8-vLO"/>
                                 <include reference="eKC-St-mXD"/>
                                 <include reference="Jf2-H5-CGi"/>
@@ -908,11 +908,11 @@
                                 <include reference="wdp-gk-zk7"/>
                                 <include reference="Y6U-oe-qTI"/>
                                 <include reference="qq7-x2-dzH"/>
-                                <include reference="CHI-Ae-hKC"/>
-                                <include reference="eOR-SG-HOm"/>
                                 <exclude reference="EMZ-9u-zwC"/>
                                 <include reference="bUi-Xv-6PY"/>
                                 <include reference="iQm-Ue-keI"/>
+                                <include reference="CHI-Ae-hKC"/>
+                                <include reference="eOR-SG-HOm"/>
                             </mask>
                         </variation>
                         <connections>
@@ -921,7 +921,9 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Reciplease" leftItemsSupplementBackButton="YES" id="BBV-AD-hPc">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="Kjb-0b-YyR"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Kjb-0b-YyR">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>

@@ -15,7 +15,7 @@ class IngredientsViewController: UIViewController {
     
     private let recipeRepository = RecipeRepositoryImplementation()
     private let ingredientRepository = IngredientsRepositoryImplementation()
-    private var results: [Recipe] = []
+    private var recipes: [Recipe] = []
     private var ingredients: [Ingredient] = []
     private var ingredientsName: [String] = []
     
@@ -23,15 +23,15 @@ class IngredientsViewController: UIViewController {
     
     @IBOutlet weak private var ingredientsTextField: UITextField!
     @IBOutlet weak private var ingredientTableView: UITableView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Actions
 
-    @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer) {
+    @IBAction private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         ingredientsTextField.resignFirstResponder()
     }
     
-    @IBAction func didTapAddButton(_ sender: Any) {
+    @IBAction private func didTapAddButton(_ sender: Any) {
         if let newIngredientName = ingredientsTextField.text {
             ingredientRepository.saveIngredient(name: newIngredientName)
             self.getIngredients()
@@ -39,19 +39,23 @@ class IngredientsViewController: UIViewController {
         }
     }
     
-    @IBAction func didTapClearButton(_ sender: Any) {
+    @IBAction private func didTapClearButton(_ sender: Any) {
+        for ingredient in ingredients {
+            ingredientRepository.removeIngredient(ingredient: ingredient)
+        }
+        PersistenceService.saveContext()
         ingredientsName.removeAll()
         ingredientTableView.reloadData()
     }
     
-    @IBAction func didTapSearchButton(_ sender: Any) {
+    @IBAction private func didTapSearchButton(_ sender: Any) {
         activityIndicator.isHidden = false
         let ingredients = joinIngredients()
         
         recipeRepository.getRecipes(ingredients: ingredients) { (result) in
             switch result {
             case .success(let searchResult):
-                self.results = [searchResult]
+                self.recipes = searchResult
                 self.performSegue(withIdentifier: "RecipeSegue", sender: nil)
                 self.activityIndicator.isHidden = true
             case .failure(_):
@@ -77,7 +81,7 @@ class IngredientsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "RecipeSegue" {
             guard let VCDestination = segue.destination as? RecipesViewController else { return }
-            VCDestination.recipes = results
+            VCDestination.recipes = recipes
         }
     }
     
@@ -89,8 +93,20 @@ class IngredientsViewController: UIViewController {
     }
     
     private func getIngredients() {
-        ingredientsName = ingredientRepository.makeFetchRequestForNames()
-        ingredients = ingredientRepository.makeFetchRequestForIngredients()
+        do {
+        ingredientsName = try ingredientRepository.makeFetchRequestForNames()
+        } catch let error as IngredientRequestError {
+            displayIngredientError(error)
+        } catch {
+            presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+        }
+        do {
+        ingredients = try ingredientRepository.makeFetchRequestForIngredients()
+        } catch let error as IngredientRequestError {
+            displayIngredientError(error)
+        } catch {
+            self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+        }
     }
 }
 
@@ -120,6 +136,22 @@ extension IngredientsViewController: UITableViewDelegate {
         if editingStyle == .delete {
             ingredientRepository.removeIngredient(ingredient: ingredients[indexPath.row])
             PersistenceService.saveContext()
+            
+            do {
+            ingredients = try ingredientRepository.makeFetchRequestForIngredients()
+            } catch let error as IngredientRequestError {
+                displayIngredientError(error)
+            } catch {
+                self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+            }
+            
+            do {
+            ingredientsName = try ingredientRepository.makeFetchRequestForNames()
+            } catch let error as IngredientRequestError {
+                displayIngredientError(error)
+            } catch {
+                self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+            }
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.reloadData()
         }

@@ -11,42 +11,35 @@ import Alamofire
 import AlamofireImage
 
 protocol RecipeRepository {
-    func getRecipes(ingredients: String, completion: @escaping (Result<Recipe, Error>) -> Void)
+    func getRecipes(ingredients: String, callback: @escaping (Result<[Recipe], Error>) -> Void)
 }
 
 class RecipeRepositoryImplementation: RecipeRepository {
     
-    //MARK: - Properties
-    
-    private let appId = "364d7474"
-    private let appKey = "2345daf55ba67a7ddb05aa2b537d97da"
-    private let baseURL = "https://api.edamam.com/"
-    
     //MARK: - Methods
     
-    func getRecipes(ingredients: String, completion: @escaping (Result<Recipe, Error>) -> Void) {
-        let searchPath = String.init(format: "search?q=%@&app_id=%@&app_key=%@","\(ingredients)", "\(appId)", "\(appKey)")
-        let url = URL(string: "\(baseURL)\(searchPath)")
-        
-        guard let urlRequest = url else { return }
-        
-        AF.request(urlRequest).responseJSON { (response) in
-            if let data = response.data {
+    func getRecipes(ingredients: String, callback: @escaping (Result<[Recipe], Error>) -> Void) {
+        NetworkingImplementation.shared.request(ingredients: ingredients) { (result) in
+            switch result {
+            case .success(let data):
                 do {
                     let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
-                        completion(.success(searchResult.hits.map { $0.recipe }))
+                        callback(.success(searchResult.hits.map { $0.recipe }))
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completion(.failure(error))
+                        callback(.failure(error))
                     }
-                    if let error = response.error {
-                        completion(.failure(error))
-                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    callback(.failure(error))
                 }
             }
         }
     }
-}
+        
+    }
+
 

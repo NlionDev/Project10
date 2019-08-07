@@ -32,7 +32,13 @@ class FavoriteDetailsViewController: UIViewController {
         DispatchQueue.main.async {
             self.favoriteDetailsTableView.reloadData()
             if let uri = self.selectedFavoriteRecipe.uri {
-                self.isFav = (self.favoriteRecipesRepository.getFavoriteRecipe(by: uri) != nil)
+                do {
+                self.isFav = (try self.favoriteRecipesRepository.getFavoriteRecipe(by: uri) != nil)
+                } catch let error as FavoriteRecipeRequestError {
+                    self.displayFavoriteRecipeError(error)
+                } catch {
+                    self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+                }
             }
             self.configurePage()
             self.setupStarButton(title: "Reciplease", action: #selector(self.didTapOnStarButton))
@@ -45,7 +51,13 @@ class FavoriteDetailsViewController: UIViewController {
     @objc private func didTapOnStarButton() {
         if isFav {
             if let ID = selectedFavoriteRecipe.uri {
-                favoriteRecipesRepository.removeRecipe(by: ID)
+                do {
+                try favoriteRecipesRepository.removeRecipe(by: ID)
+                } catch let error as FavoriteRecipeRequestError {
+                    displayFavoriteRecipeError(error)
+                } catch {
+                    self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
+                }
             }
         } else {
             if let image = selectedFavoriteRecipe.image,
@@ -55,6 +67,7 @@ class FavoriteDetailsViewController: UIViewController {
                 favoriteRecipesRepository.addRecipeToFavorite(totalTime: selectedFavoriteRecipe.totalTime, image: image, label: label, ingredientLines: ingredientLines, uri: uri)
             }
         }
+        isFav.toggle()
         configureStarButtonColor()
     }
     
