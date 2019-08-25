@@ -528,6 +528,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="reQ-eo-Xun">
+                                <rect key="frame" x="150" y="274" width="20" height="20"/>
+                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0R3-Pi-869" customClass="ButtonsView" customModule="Reciplease" customModuleProvider="target">
                                 <rect key="frame" x="60" y="427" width="200" height="40"/>
                                 <color key="backgroundColor" red="0.34916582703590393" green="0.57516831159591675" blue="0.38428515195846558" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -828,6 +831,7 @@
                         <constraints>
                             <constraint firstItem="9aa-Gr-D2O" firstAttribute="top" secondItem="EBR-9m-vmg" secondAttribute="top" id="6RB-Pn-115"/>
                             <constraint firstItem="EBR-9m-vmg" firstAttribute="bottom" secondItem="0R3-Pi-869" secondAttribute="bottom" constant="8" id="8n9-lD-PWJ"/>
+                            <constraint firstItem="reQ-eo-Xun" firstAttribute="centerY" secondItem="0CK-vM-hKg" secondAttribute="centerY" id="CHI-Ae-hKC"/>
                             <constraint firstItem="0R3-Pi-869" firstAttribute="top" secondItem="Je6-ht-glB" secondAttribute="bottom" constant="8" id="EMZ-9u-zwC"/>
                             <constraint firstItem="Je6-ht-glB" firstAttribute="top" secondItem="IZP-9s-Lo6" secondAttribute="bottom" constant="5" id="Jf2-H5-CGi">
                                 <variation key="heightClass=regular-widthClass=compact" constant="8"/>
@@ -852,6 +856,7 @@
                             <constraint firstItem="IZP-9s-Lo6" firstAttribute="leading" secondItem="EBR-9m-vmg" secondAttribute="leading" constant="20" id="eKC-St-mXD">
                                 <variation key="heightClass=regular-widthClass=compact" constant="8"/>
                             </constraint>
+                            <constraint firstItem="reQ-eo-Xun" firstAttribute="centerX" secondItem="0CK-vM-hKg" secondAttribute="centerX" id="eOR-SG-HOm"/>
                             <constraint firstItem="0R3-Pi-869" firstAttribute="centerX" secondItem="0CK-vM-hKg" secondAttribute="centerX" id="iQm-Ue-keI"/>
                             <constraint firstItem="mwc-iN-idV" firstAttribute="top" secondItem="9aa-Gr-D2O" secondAttribute="bottom" constant="25" id="qq7-x2-dzH">
                                 <variation key="heightClass=regular-widthClass=compact" constant="8"/>
@@ -861,6 +866,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EBR-9m-vmg"/>
                         <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="reQ-eo-Xun"/>
+                            </mask>
                             <mask key="constraints">
                                 <exclude reference="8n9-lD-PWJ"/>
                                 <exclude reference="Q8m-nL-s7m"/>
@@ -878,9 +886,14 @@
                                 <exclude reference="EMZ-9u-zwC"/>
                                 <exclude reference="bUi-Xv-6PY"/>
                                 <exclude reference="iQm-Ue-keI"/>
+                                <exclude reference="CHI-Ae-hKC"/>
+                                <exclude reference="eOR-SG-HOm"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="reQ-eo-Xun"/>
+                            </mask>
                             <mask key="constraints">
                                 <include reference="8n9-lD-PWJ"/>
                                 <exclude reference="Q8m-nL-s7m"/>
@@ -898,6 +911,8 @@
                                 <exclude reference="EMZ-9u-zwC"/>
                                 <include reference="bUi-Xv-6PY"/>
                                 <include reference="iQm-Ue-keI"/>
+                                <include reference="CHI-Ae-hKC"/>
+                                <include reference="eOR-SG-HOm"/>
                             </mask>
                         </variation>
                         <connections>
@@ -906,10 +921,13 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Reciplease" leftItemsSupplementBackButton="YES" id="BBV-AD-hPc">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="Kjb-0b-YyR"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Kjb-0b-YyR">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="reQ-eo-Xun" id="Rrh-Qr-7gr"/>
                         <outlet property="ingredientTableView" destination="Je6-ht-glB" id="Hs5-UI-XgN"/>
                         <outlet property="ingredientsTextField" destination="jeA-gJ-3Qd" id="o4v-sj-BVx"/>
                         <segue destination="QOH-dL-cDP" kind="show" identifier="RecipeSegue" id="4Wu-HF-8bi"/>

@@ -15,7 +15,7 @@ class RecipesViewController: UIViewController {
     //MARK: - Properties
     
     private var recipeRepository = RecipeRepositoryImplementation()
-    var recipes: [Hit] = [] {
+    var recipes: [Recipe] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.recipesTableView.reloadData()
@@ -65,9 +65,9 @@ extension RecipesViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let recipesTitle = recipes[indexPath.row].recipe.label
-        let recipesTime = recipes[indexPath.row].recipe.totalTime
-        let recipeImageURLString = recipes[indexPath.row].recipe.image
+        let recipesTitle = recipes[indexPath.row].label
+        let recipesTime = recipes[indexPath.row].totalTime
+        let recipeImageURLString = recipes[indexPath.row].image
         cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
 
         return cell
@@ -78,7 +78,7 @@ extension RecipesViewController: UITableViewDataSource {
 extension RecipesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRecipe = recipes[indexPath.row].recipe
+        selectedRecipe = recipes[indexPath.row]
         performSegue(withIdentifier: "DetailsSegueFromResults", sender: self)
     }
 }

@@ -33,6 +33,8 @@
 		03B8DCC422A0328C004340C1 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC322A0328C004340C1 /* SearchResult.swift */; };
 		03B8DCC822A0466C004340C1 /* RecipeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC722A0466C004340C1 /* RecipeRepository.swift */; };
 		03B8DCCA22A05C3B004340C1 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC922A05C3B004340C1 /* ErrorHandler.swift */; };
+		03C453E422F7157600AA5303 /* Recipes.json in Resources */ = {isa = PBXBuildFile; fileRef = 03C453E322F7157600AA5303 /* Recipes.json */; };
+		03C453E622FAFB6400AA5303 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C453E522FAFB6400AA5303 /* Networking.swift */; };
 		03EFE6C422E85BA300A280F0 /* FavoriteRecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EFE6C322E85BA300A280F0 /* FavoriteRecipeTableViewCell.swift */; };
 		1B554B0B359E3931A748F2FC /* Pods_RecipleaseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7075A02C0D2F7CF808B565B2 /* Pods_RecipleaseTests.framework */; };
 		C045513E034CB5A19952363D /* Pods_RecipleaseUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C0B6B16D59A9AE44C1DDB6 /* Pods_RecipleaseUITests.framework */; };
@@ -89,6 +91,8 @@
 		03B8DCC322A0328C004340C1 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		03B8DCC722A0466C004340C1 /* RecipeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRepository.swift; sourceTree = "<group>"; };
 		03B8DCC922A05C3B004340C1 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		03C453E322F7157600AA5303 /* Recipes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Recipes.json; sourceTree = "<group>"; };
+		03C453E522FAFB6400AA5303 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		03EFE6C322E85BA300A280F0 /* FavoriteRecipeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipeTableViewCell.swift; sourceTree = "<group>"; };
 		3C7671F885A894891316F4C5 /* Pods_Reciplease.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reciplease.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D7993738747324CC53AA89D /* Pods-RecipleaseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecipleaseUITests.debug.xcconfig"; path = "Target Support Files/Pods-RecipleaseUITests/Pods-RecipleaseUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 			children = (
 				03B8DC9722A00911004340C1 /* RecipleaseTests.swift */,
 				03B8DC9922A00911004340C1 /* Info.plist */,
+				03C453E322F7157600AA5303 /* Recipes.json */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 				039ECC7D22CA492C00FC4464 /* FavoriteRecipesRepository.swift */,
 				0324A1C822D2524B00BA5D43 /* IngredientsRepository.swift */,
 				0330CB2322C0D10B00232507 /* PersitenceService.swift */,
+				03C453E522FAFB6400AA5303 /* Networking.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -367,6 +373,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03C453E422F7157600AA5303 /* Recipes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +484,7 @@
 				03B8DCB422A00EBC004340C1 /* IngredientsViewController.swift in Sources */,
 				03B8DCC222A031EC004340C1 /* RecipeTableViewCell.swift in Sources */,
 				0330CB2822C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift in Sources */,
+				03C453E622FAFB6400AA5303 /* Networking.swift in Sources */,
 				03B8DCCA22A05C3B004340C1 /* ErrorHandler.swift in Sources */,
 				03B8DCC022A03130004340C1 /* RecipeDetailsViewController.swift in Sources */,
 				03B8DCC422A0328C004340C1 /* SearchResult.swift in Sources */,

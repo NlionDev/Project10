@@ -21,5 +21,6 @@ extension FavoriteRecipe {
     @NSManaged public var totalTime: Int
     @NSManaged public var image: String?
     @NSManaged public var ingredientLines: [String]?
+    @NSManaged public var uri: String?
 
 }

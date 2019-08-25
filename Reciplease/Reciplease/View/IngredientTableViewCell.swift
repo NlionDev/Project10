@@ -12,7 +12,7 @@ class IngredientTableViewCell: UITableViewCell {
 
     //MARK: - Outlets
     
-    @IBOutlet weak var ingredientLabel: UILabel!
+    @IBOutlet weak private var ingredientLabel: UILabel!
     
     
     //MARK: - Methods
