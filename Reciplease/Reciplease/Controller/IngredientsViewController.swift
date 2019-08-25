@@ -13,7 +13,7 @@ class IngredientsViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let recipeRepository = RecipeRepositoryImplementation()
+    private let recipeRepository = RecipeRepositoryImplementation(networking: NetworkingImplementation.shared)
     private let ingredientRepository = IngredientsRepositoryImplementation()
     private var recipes: [Recipe] = []
     private var ingredients: [Ingredient] = []

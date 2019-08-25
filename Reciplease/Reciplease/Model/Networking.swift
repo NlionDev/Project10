@@ -42,7 +42,6 @@ class NetworkingImplementation: Networking {
             }
             if let error = response.error {
                 completion(.failure(error))
-                return
             }
         }
     }

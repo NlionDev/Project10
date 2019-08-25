@@ -14,7 +14,7 @@ class RecipesViewController: UIViewController {
 
     //MARK: - Properties
     
-    private var recipeRepository = RecipeRepositoryImplementation()
+    private var recipeRepository = RecipeRepositoryImplementation(networking: NetworkingImplementation.shared)
     var recipes: [Recipe] = [] {
         didSet {
             DispatchQueue.main.async {

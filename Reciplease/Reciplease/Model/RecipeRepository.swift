@@ -16,25 +16,35 @@ protocol RecipeRepository {
 
 class RecipeRepositoryImplementation: RecipeRepository {
     
+    private var networking: Networking
+    
+    init(networking: Networking) {
+        self.networking = networking
+    }
+    
     //MARK: - Methods
     
     func getRecipes(ingredients: String, callback: @escaping (Result<[Recipe], Error>) -> Void) {
-        NetworkingImplementation.shared.request(ingredients: ingredients) { (result) in
+        networking.request(ingredients: ingredients) { (result) in
             switch result {
             case .success(let data):
                 do {
                     let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
                         callback(.success(searchResult.hits.map { $0.recipe }))
+                        
                     }
+                    
                 } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
+                        
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     callback(.failure(error))
+                    
                 }
             }
         }
