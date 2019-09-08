@@ -22,7 +22,7 @@
 		03B8DC8822A00910004340C1 /* Reciplease.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DC8622A00910004340C1 /* Reciplease.xcdatamodeld */; };
 		03B8DC8A22A00911004340C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03B8DC8922A00911004340C1 /* Assets.xcassets */; };
 		03B8DC8D22A00911004340C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B8DC8B22A00911004340C1 /* LaunchScreen.storyboard */; };
-		03B8DC9822A00911004340C1 /* RecipleaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DC9722A00911004340C1 /* RecipleaseTests.swift */; };
+		03B8DC9822A00911004340C1 /* FavotiteRecipesRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DC9722A00911004340C1 /* FavotiteRecipesRepositoryTests.swift */; };
 		03B8DCA322A00911004340C1 /* RecipleaseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCA222A00911004340C1 /* RecipleaseUITests.swift */; };
 		03B8DCB422A00EBC004340C1 /* IngredientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCB322A00EBC004340C1 /* IngredientsViewController.swift */; };
 		03B8DCB622A013E0004340C1 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCB522A013E0004340C1 /* ButtonsView.swift */; };
@@ -33,6 +33,9 @@
 		03B8DCC422A0328C004340C1 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC322A0328C004340C1 /* SearchResult.swift */; };
 		03B8DCC822A0466C004340C1 /* RecipeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC722A0466C004340C1 /* RecipeRepository.swift */; };
 		03B8DCCA22A05C3B004340C1 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DCC922A05C3B004340C1 /* ErrorHandler.swift */; };
+		03C2F9F9232511B900741B23 /* RecipeRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C2F9F8232511B900741B23 /* RecipeRepositoryTests.swift */; };
+		03C2F9FB232511D300741B23 /* IngredientsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C2F9FA232511D300741B23 /* IngredientsRepositoryTests.swift */; };
+		03C2F9FD23251DE400741B23 /* MockPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C2F9FC23251DE400741B23 /* MockPersistenceService.swift */; };
 		03C453E422F7157600AA5303 /* Recipes.json in Resources */ = {isa = PBXBuildFile; fileRef = 03C453E322F7157600AA5303 /* Recipes.json */; };
 		03C453E622FAFB6400AA5303 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C453E522FAFB6400AA5303 /* Networking.swift */; };
 		03E12DC8230BEEAF007B4BF3 /* MockNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E12DC7230BEEAF007B4BF3 /* MockNetworking.swift */; };
@@ -78,7 +81,7 @@
 		03B8DC8C22A00911004340C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03B8DC8E22A00911004340C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03B8DC9322A00911004340C1 /* RecipleaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipleaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		03B8DC9722A00911004340C1 /* RecipleaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipleaseTests.swift; sourceTree = "<group>"; };
+		03B8DC9722A00911004340C1 /* FavotiteRecipesRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavotiteRecipesRepositoryTests.swift; sourceTree = "<group>"; };
 		03B8DC9922A00911004340C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03B8DC9E22A00911004340C1 /* RecipleaseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipleaseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B8DCA222A00911004340C1 /* RecipleaseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipleaseUITests.swift; sourceTree = "<group>"; };
@@ -92,6 +95,9 @@
 		03B8DCC322A0328C004340C1 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		03B8DCC722A0466C004340C1 /* RecipeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRepository.swift; sourceTree = "<group>"; };
 		03B8DCC922A05C3B004340C1 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		03C2F9F8232511B900741B23 /* RecipeRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRepositoryTests.swift; sourceTree = "<group>"; };
+		03C2F9FA232511D300741B23 /* IngredientsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRepositoryTests.swift; sourceTree = "<group>"; };
+		03C2F9FC23251DE400741B23 /* MockPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceService.swift; sourceTree = "<group>"; };
 		03C453E322F7157600AA5303 /* Recipes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Recipes.json; sourceTree = "<group>"; };
 		03C453E522FAFB6400AA5303 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		03E12DC7230BEEAF007B4BF3 /* MockNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworking.swift; sourceTree = "<group>"; };
@@ -174,10 +180,13 @@
 		03B8DC9622A00911004340C1 /* RecipleaseTests */ = {
 			isa = PBXGroup;
 			children = (
-				03B8DC9722A00911004340C1 /* RecipleaseTests.swift */,
+				03B8DC9722A00911004340C1 /* FavotiteRecipesRepositoryTests.swift */,
+				03C2F9F8232511B900741B23 /* RecipeRepositoryTests.swift */,
+				03C2F9FA232511D300741B23 /* IngredientsRepositoryTests.swift */,
 				03B8DC9922A00911004340C1 /* Info.plist */,
 				03C453E322F7157600AA5303 /* Recipes.json */,
 				03E12DC7230BEEAF007B4BF3 /* MockNetworking.swift */,
+				03C2F9FC23251DE400741B23 /* MockPersistenceService.swift */,
 			);
 			path = RecipleaseTests;
 			sourceTree = "<group>";
@@ -510,8 +519,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03B8DC9822A00911004340C1 /* RecipleaseTests.swift in Sources */,
+				03C2F9FB232511D300741B23 /* IngredientsRepositoryTests.swift in Sources */,
+				03B8DC9822A00911004340C1 /* FavotiteRecipesRepositoryTests.swift in Sources */,
+				03C2F9FD23251DE400741B23 /* MockPersistenceService.swift in Sources */,
 				03E12DC8230BEEAF007B4BF3 /* MockNetworking.swift in Sources */,
+				03C2F9F9232511B900741B23 /* RecipeRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
