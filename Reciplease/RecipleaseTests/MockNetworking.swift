@@ -12,36 +12,40 @@ import Alamofire
 
 class MockNetworking: Networking {
     
-    static let shared = MockNetworking()
+    enum ExpectedResult {
+        case correct
+        case invalidJson
+        case error
+    }
     
-    init() {}
+    let expectedResult: ExpectedResult
+    
+    init (expectedResult: ExpectedResult) {
+        self.expectedResult = expectedResult
+    }
     
     var error: Error? {
         return RecipeError()
     }
     
-    var recipeCorrectData: Data? {
+    var recipeCorrectData: Data {
         let bundle = Bundle(for: MockNetworking.self)
-        let url = bundle.url(forResource: "Recipes", withExtension:
-            "json")!
+        let url = bundle.url(forResource: "Recipes", withExtension: "json")!
         return try! Data(contentsOf: url)
     }
     
-    var recipeIncorrectData: Data? {
-        return "erreur".data(using: .utf8)!
-    }
+    var recipeIncorrectData = "erreur".data(using: .utf8)!
     
     
     func request(ingredients: String, completion: @escaping (Result<Data, Error>) -> Void) {
         
-        
-        if let data = recipeCorrectData {
-            completion(.success(data))
-        }
-        
-        
-        if let error = error {
-            completion(.failure(error))
+        switch expectedResult {
+        case .correct:
+            completion(.success(recipeCorrectData))
+        case .invalidJson:
+            completion(.success(recipeIncorrectData))
+        case .error:
+            completion(.failure(RecipeError()))
         }
     }
     

@@ -15,7 +15,7 @@ class FavoritesViewController: UIViewController {
     
     private var selectedRecipe: FavoriteRecipe?
     private var favoriteRecipes: [FavoriteRecipe] = []
-    private let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation()
+    private let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
 
     // MARK: - Outlets
     

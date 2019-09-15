@@ -23,8 +23,8 @@ class NetworkingImplementation: Networking {
     
     // MARK: - Properties
     
-    private let appId = "364d7474"
-    private let appKey = "2345daf55ba67a7ddb05aa2b537d97da"
+    private let appId = apiId
+    private let appKey = apiKey
     private let baseURL = "https://api.edamam.com/"
     
     // MARK: - Methods

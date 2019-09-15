@@ -26,11 +26,26 @@ enum FavoriteRecipeRequestError: Error {
 
 class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     
+    let persistentContainer: NSPersistentContainer
+    
+    lazy var backgroundContext: NSManagedObjectContext = {
+        return self.persistentContainer.newBackgroundContext()
+    }()
+    
+    init(container: NSPersistentContainer) {
+        self.persistentContainer = container
+        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+    }
+    
+    convenience init() {
+        self.init(container: PersistenceService.persistentContainer)
+    }
+    
     func getFavoriteRecipes() throws -> [FavoriteRecipe] {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
-            let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
+            let favoritesRecipes = try persistentContainer.viewContext.fetch(fetchRequest)
             favorites = favoritesRecipes
         } catch {
             throw FavoriteRecipeRequestError.requestForFavoriteRecipesError
@@ -43,7 +58,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
         var favoriteRecipe: FavoriteRecipe?
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
-            let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
+            let favoritesRecipes = try persistentContainer.viewContext.fetch(fetchRequest)
             favoriteRecipe = favoritesRecipes.first { favoriteRecipe -> Bool in
                 favoriteRecipe.uri == uri
             }
@@ -56,7 +71,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
     }
     
     func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String) {
-        let favoriteRecipe = FavoriteRecipe(context: PersistenceService.context)
+        let favoriteRecipe = FavoriteRecipe(context: persistentContainer.viewContext)
         favoriteRecipe.totalTime = totalTime
         favoriteRecipe.image = image
         favoriteRecipe.label = label
@@ -71,12 +86,12 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         do {
-            let favoritesRecipes = try PersistenceService.context.fetch(fetchRequest)
+            let favoritesRecipes = try persistentContainer.viewContext.fetch(fetchRequest)
             favorites = favoritesRecipes
             for recipe in favorites {
                 if recipe.uri == uri {
-                    PersistenceService.context.delete(recipe)
-                    PersistenceService.saveContext()
+                    persistentContainer.viewContext.delete(recipe)
+                    try backgroundContext.save()
                 }
             }
         } catch {

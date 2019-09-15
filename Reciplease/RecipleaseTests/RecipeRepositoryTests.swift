@@ -16,7 +16,7 @@ class RecipeRepositoryTests: XCTestCase {
     
     func testRecipeDownloadShouldPostSuccessCallbackIfNoErrorAndCorrectData() {
         // Given
-        let recipeRepository = RecipeRepositoryImplementation(networking: MockNetworking.shared)
+        let recipeRepository = RecipeRepositoryImplementation(networking: MockNetworking(expectedResult: .correct))
         
         // When
         let expectation = self.expectation(description: "Wait for Callback")
@@ -55,7 +55,7 @@ class RecipeRepositoryTests: XCTestCase {
     
     func testRecipeDownloadShouldPostFailedCallbackIfError() {
         // Given
-        let recipeRepository = RecipeRepositoryImplementation(networking: MockNetworking.shared)
+        let recipeRepository = RecipeRepositoryImplementation(networking: MockNetworking(expectedResult: .error))
         
         // When
         let expectation = self.expectation(description: "Wait for Failure.")
@@ -68,4 +68,21 @@ class RecipeRepositoryTests: XCTestCase {
         }
         waitForExpectations(timeout: 0.1)
     }
-}
+    
+    func testRecipeDownloadShouldReturnInvalidJson() {
+        //Given
+        let recipeRepository = RecipeRepositoryImplementation(networking: MockNetworking(expectedResult: .invalidJson))
+        
+        //When
+        let expectation = self.expectation(description: "Wait for Incorrect Data.")
+        recipeRepository.getRecipes(ingredients: "Chicken") { (result) in
+            //Then
+                if case .failure(let error) = result {
+                    XCTAssertNotNil(error)
+                    expectation.fulfill()
+                }
+            }
+        waitForExpectations(timeout: 0.1)
+        }
+    }
+

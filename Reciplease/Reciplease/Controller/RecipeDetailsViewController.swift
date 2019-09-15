@@ -14,7 +14,7 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: - Properties
     
     var recipe: Recipe!
-    private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation()
+    private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
     private var isFav = true
     
     // MARK: - Outlets

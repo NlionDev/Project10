@@ -14,7 +14,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
     
     // MARK: - Properties
     
-    let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation()
+    let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
     var favoriteRecipes: [FavoriteRecipe] = []
     var favoriteRecipe: FavoriteRecipe!
     
@@ -25,9 +25,6 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
             favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes()
         }
         catch {}
-    }
-    
-    override func tearDown() {
         do {
             for recipe in favoriteRecipes {
                 if let uri = recipe.uri {
@@ -38,11 +35,11 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
         catch {}
     }
     
+    
     // MARK: - Tests
     
     func testRecipeShouldBeSavedInCoreData() {
         // Given
-        tearDown()
         let name = "Chicken Potatoes"
         let uri = "id"
         let image = "image"
@@ -51,7 +48,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
         
         // When
         favoriteRecipeRepository.addRecipeToFavorite(totalTime: time, image: image, label: name, ingredientLines: ingredientLines, uri: uri)
-        XCTAssertNoThrow(favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes() )
+        XCTAssertNoThrow(favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes())
         
         // Then
         if let recipe = favoriteRecipes.first,
@@ -69,10 +66,16 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
     
     func testARecipeShouldBeRemovedFromCoreData() {
         // Given
-        let recipeUri = "id"
+        let name = "Chicken Potatoes"
+        let uri = "id"
+        let image = "image"
+        let time = 60
+        let ingredientLines = ["Chicken", "Potatoes"]
+        favoriteRecipeRepository.addRecipeToFavorite(totalTime: time, image: image, label: name, ingredientLines: ingredientLines, uri: uri)
+        XCTAssertNoThrow(favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes())
         
         // When
-        XCTAssertNoThrow(try favoriteRecipeRepository.removeRecipe(by: recipeUri))
+        XCTAssertNoThrow(try favoriteRecipeRepository.removeRecipe(by: uri))
         XCTAssertNoThrow(favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes())
         
         // Then
@@ -93,22 +96,43 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
             XCTAssertEqual(favoriteRecipeUri, recipeUri)
         }
     }
+    
+    func testRemoveRecipebyURIShouldCatchAnError() {
+        //Given
+        let mockFavoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
+        let uri = "id"
+        
+        //When
+        XCTAssertThrowsError(try mockFavoriteRecipeRepository.removeRecipe(by: uri)) { error in
+            //Then
+            XCTAssertNotNil(error as? FavoriteRecipeRequestError)
+            XCTAssertEqual(error as! FavoriteRecipeRequestError, FavoriteRecipeRequestError.removingRecipeError)
+        }
+    }
    
-//    func testFavoriteRecipesDownloadShouldBeCatchAnError() {
-//
-//        XCTAssertThrowsError(try favoriteRecipeRepository.getFavoriteRecipes()) { error in
-//            XCTAssertNotNil(error as? FavoriteRecipeRequestError)
-//            XCTAssertEqual(error as! FavoriteRecipeRequestError, FavoriteRecipeRequestError.requestForFavoriteRecipesError)
-//        }
-//    }
-//
-//    func testFavoriteRecipesDownloadByUriShouldBeCatchAnError() {
-//        let recipeUri = "id"
-//
-//        XCTAssertThrowsError(try favoriteRecipeRepository.getFavoriteRecipe(by: recipeUri)) { error in
-//            XCTAssertNotNil(error as? FavoriteRecipeRequestError)
-//            XCTAssertEqual(error as! FavoriteRecipeRequestError, FavoriteRecipeRequestError.requestForGettingRecipeByUriError)
-//        }
-//    }
+    func testFavoriteRecipesDownloadShouldCatchAnError() {
+        //Given
+        let mockFavoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
+
+        //When
+        XCTAssertThrowsError(try mockFavoriteRecipeRepository.getFavoriteRecipes()) { error in
+            //Then
+            XCTAssertNotNil(error as? FavoriteRecipeRequestError)
+            XCTAssertEqual(error as! FavoriteRecipeRequestError, FavoriteRecipeRequestError.requestForFavoriteRecipesError)
+        }
+    }
+
+    func testFavoriteRecipesDownloadByUriShouldCatchAnError() {
+        //Given
+        let mockFavoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
+        let recipeUri = "id"
+
+        //When
+        XCTAssertThrowsError(try mockFavoriteRecipeRepository.getFavoriteRecipe(by: recipeUri)) { error in
+            //Then
+            XCTAssertNotNil(error as? FavoriteRecipeRequestError)
+            XCTAssertEqual(error as! FavoriteRecipeRequestError, FavoriteRecipeRequestError.requestForGettingRecipeByUriError)
+        }
+    }
    
 }
