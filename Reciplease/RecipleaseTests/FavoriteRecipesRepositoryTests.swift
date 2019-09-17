@@ -14,7 +14,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
     
     // MARK: - Properties
     
-    let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
+    let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.persistentContainer)
     var favoriteRecipes: [FavoriteRecipe] = []
     var favoriteRecipe: FavoriteRecipe!
     
@@ -39,6 +39,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
     // MARK: - Tests
     
     func testRecipeShouldBeSavedInCoreData() {
+        
         // Given
         let name = "Chicken Potatoes"
         let uri = "id"
@@ -112,6 +113,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
    
     func testFavoriteRecipesDownloadShouldCatchAnError() {
         //Given
+        
         let mockFavoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
 
         //When

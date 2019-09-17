@@ -48,6 +48,7 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
             let favoritesRecipes = try persistentContainer.viewContext.fetch(fetchRequest)
             favorites = favoritesRecipes
         } catch {
+            
             throw FavoriteRecipeRequestError.requestForFavoriteRecipesError
         }
         

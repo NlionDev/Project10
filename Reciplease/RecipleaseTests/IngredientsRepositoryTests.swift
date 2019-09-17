@@ -16,7 +16,7 @@ class IngredientsRepositoryTests: XCTestCase {
     
     var ingredients: [Ingredient] = []
     var ingredientsNames: [String] = []
-    let ingredientRepository = IngredientsRepositoryImplementation()
+    let ingredientRepository = IngredientsRepositoryImplementation(container: MockPersistenceService.persistentContainer)
     
     // MARK: - Lifecycle
     
@@ -30,9 +30,7 @@ class IngredientsRepositoryTests: XCTestCase {
             ingredientsNames = try ingredientRepository.makeFetchRequestForNames()
         }
         catch {}
-    }
-    
-    override func tearDown() {
+        
         for ingredient in ingredients {
             ingredientRepository.removeIngredient(ingredient: ingredient)
         }
@@ -56,8 +54,9 @@ class IngredientsRepositoryTests: XCTestCase {
     
     func testChickenIngredientShouldBeRemovedFromCoreData() {
         // Given
-        //        let ingredient = "Chicken"
-        //        ingredientRepository.saveIngredient(name: ingredient)
+        let ingredient = "Chicken"
+        ingredientRepository.saveIngredient(name: ingredient)
+        XCTAssertNoThrow(ingredients = try ingredientRepository.makeFetchRequestForIngredients())
         
         // When
         if let ingredient = ingredients.first {
@@ -97,21 +96,29 @@ class IngredientsRepositoryTests: XCTestCase {
         }
     }
     
-    //    func testIngredientsDownloadShouldBeCatchAnError() {
-    //
-    //        XCTAssertThrowsError(try ingredientRepository.makeFetchRequestForIngredients()) { error in
-    //            XCTAssertNotNil(error as? IngredientRequestError)
-    //            XCTAssertEqual(error as! IngredientRequestError, IngredientRequestError.requestForIngredientsError)
-    //        }
-    //    }
-    //
-    //    func testIngredientsNamrsDownloadShouldBeCatchAnError() {
-    //
-    //        XCTAssertThrowsError(try ingredientRepository.makeFetchRequestForNames()) { error in
-    //            XCTAssertNotNil(error as? IngredientRequestError)
-    //            XCTAssertEqual(error as! IngredientRequestError, IngredientRequestError.requestForIngredientsNamesError)
-    //        }
-    //    }
+        func testIngredientsDownloadShouldBeCatchAnError() {
+            //Given
+            let mockIngredientRepository = IngredientsRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
+    
+            //When
+            XCTAssertThrowsError(try mockIngredientRepository.makeFetchRequestForIngredients()) { error in
+                //Then
+                XCTAssertNotNil(error as? IngredientRequestError)
+                XCTAssertEqual(error as! IngredientRequestError, IngredientRequestError.requestForIngredientsError)
+            }
+        }
+    
+        func testIngredientsNamrsDownloadShouldBeCatchAnError() {
+            //Given
+            let mockIngredientRepository = IngredientsRepositoryImplementation(container: MockPersistenceService.mockPersistentContainer)
+            
+            //When
+            XCTAssertThrowsError(try mockIngredientRepository.makeFetchRequestForNames()) { error in
+                //Then
+                XCTAssertNotNil(error as? IngredientRequestError)
+                XCTAssertEqual(error as! IngredientRequestError, IngredientRequestError.requestForIngredientsNamesError)
+            }
+        }
     
 
 }

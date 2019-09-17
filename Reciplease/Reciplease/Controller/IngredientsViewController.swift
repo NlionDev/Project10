@@ -14,7 +14,7 @@ class IngredientsViewController: UIViewController {
     //MARK: - Properties
     
     private let recipeRepository = RecipeRepositoryImplementation(networking: NetworkingImplementation.shared)
-    private let ingredientRepository = IngredientsRepositoryImplementation()
+    private let ingredientRepository = IngredientsRepositoryImplementation(container: PersistenceService.persistentContainer)
     private var recipes: [Recipe] = []
     private var ingredients: [Ingredient] = []
     private var ingredientsName: [String] = []

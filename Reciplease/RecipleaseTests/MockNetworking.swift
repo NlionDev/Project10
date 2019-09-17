@@ -23,11 +23,7 @@ class MockNetworking: Networking {
     init (expectedResult: ExpectedResult) {
         self.expectedResult = expectedResult
     }
-    
-    var error: Error? {
-        return RecipeError()
-    }
-    
+        
     var recipeCorrectData: Data {
         let bundle = Bundle(for: MockNetworking.self)
         let url = bundle.url(forResource: "Recipes", withExtension: "json")!

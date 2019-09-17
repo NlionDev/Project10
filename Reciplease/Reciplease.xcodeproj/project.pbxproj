@@ -15,7 +15,6 @@
 		0330CB2822C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2622C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift */; };
 		0330CB2A22C3752900232507 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2922C3752900232507 /* FavoritesViewController.swift */; };
 		0330CB2E22C5FDC000232507 /* FavoriteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330CB2D22C5FDC000232507 /* FavoriteDetailsViewController.swift */; };
-		039B1E93232E36D900845913 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B1E92232E36D900845913 /* ApiKey.swift */; };
 		039ECC7E22CA492C00FC4464 /* FavoriteRecipesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039ECC7D22CA492C00FC4464 /* FavoriteRecipesRepository.swift */; };
 		039ECC8622CA6BAD00FC4464 /* CookingTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039ECC8522CA6BAD00FC4464 /* CookingTimeView.swift */; };
 		03B8DC8022A00910004340C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B8DC7F22A00910004340C1 /* AppDelegate.swift */; };
@@ -72,7 +71,6 @@
 		0330CB2622C361A800232507 /* FavoriteRecipe+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRecipe+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		0330CB2922C3752900232507 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		0330CB2D22C5FDC000232507 /* FavoriteDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDetailsViewController.swift; sourceTree = "<group>"; };
-		039B1E92232E36D900845913 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		039ECC7D22CA492C00FC4464 /* FavoriteRecipesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesRepository.swift; sourceTree = "<group>"; };
 		039ECC8522CA6BAD00FC4464 /* CookingTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTimeView.swift; sourceTree = "<group>"; };
 		03B8DC7C22A00910004340C1 /* Reciplease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reciplease.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,7 +213,6 @@
 				0324A1C822D2524B00BA5D43 /* IngredientsRepository.swift */,
 				03C453E522FAFB6400AA5303 /* Networking.swift */,
 				0330CB2322C0D10B00232507 /* PersitenceService.swift */,
-				039B1E92232E36D900845913 /* ApiKey.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -502,7 +499,6 @@
 				03C453E622FAFB6400AA5303 /* Networking.swift in Sources */,
 				03B8DCCA22A05C3B004340C1 /* ErrorHandler.swift in Sources */,
 				03B8DCC022A03130004340C1 /* RecipeDetailsViewController.swift in Sources */,
-				039B1E93232E36D900845913 /* ApiKey.swift in Sources */,
 				03B8DCC422A0328C004340C1 /* SearchResult.swift in Sources */,
 				03B8DCBC22A02A87004340C1 /* IngredientTableViewCell.swift in Sources */,
 				0330CB2422C0D10B00232507 /* PersitenceService.swift in Sources */,
