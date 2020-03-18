@@ -27,8 +27,8 @@ class FavoriteDetailsViewController: UIViewController {
     // MARK: - Lifecycle
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         DispatchQueue.main.async {
             self.favoriteDetailsTableView.reloadData()
             if let uri = self.selectedFavoriteRecipe.uri {

@@ -50,6 +50,7 @@ class IngredientsViewController: UIViewController {
     
     @IBAction private func didTapSearchButton(_ sender: Any) {
         activityIndicator.isHidden = false
+        ingredientTableView.isHidden = true
         let ingredients = joinIngredients()
         
         recipeRepository.getRecipes(ingredients: ingredients) { (result) in
@@ -58,6 +59,7 @@ class IngredientsViewController: UIViewController {
                 self.recipes = searchResult
                 self.performSegue(withIdentifier: "RecipeSegue", sender: nil)
                 self.activityIndicator.isHidden = true
+                self.ingredientTableView.isHidden = false
             case .failure(_):
                 self.presentAlert(alertTitle: "Error", message: "The recipes download fail.", actionTitle: "OK")
             }
