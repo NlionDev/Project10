@@ -12,21 +12,17 @@ class FavoriteDetailsViewController: UIViewController {
 
     
     // MARK: - Properties
-    
     var selectedFavoriteRecipe: FavoriteRecipe!
     private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
     private var isFav = true
     
     // MARK: - Outlets
-    
     @IBOutlet weak private var cookingTimeLabel: UILabel!
     @IBOutlet weak private var recipeTitleLabel: UILabel!
     @IBOutlet weak private var recipeImageView: UIImageView!
     @IBOutlet weak private var favoriteDetailsTableView: UITableView!
     
     // MARK: - Lifecycle
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
@@ -40,6 +36,7 @@ class FavoriteDetailsViewController: UIViewController {
                     self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
                 }
             }
+            self.nibRegister()
             self.configurePage()
             self.setupStarButton(title: "Reciplease", action: #selector(self.didTapOnStarButton))
             self.configureStarButtonColor()
@@ -47,7 +44,6 @@ class FavoriteDetailsViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
     @objc private func didTapOnStarButton() {
         if isFav {
             if let ID = selectedFavoriteRecipe.uri {
@@ -72,6 +68,10 @@ class FavoriteDetailsViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func nibRegister() {
+        let ingredientCellNib = UINib(nibName: "RecipeIngredientsTableViewCell", bundle: nil)
+        favoriteDetailsTableView.register(ingredientCellNib, forCellReuseIdentifier: "IngredientCell")
+    }
     
     private func configurePage() {
         let cookingTime = String(selectedFavoriteRecipe.totalTime)
@@ -102,24 +102,20 @@ class FavoriteDetailsViewController: UIViewController {
 
 }
 
+//MARK: - Extension
 extension FavoriteDetailsViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        guard let ingredients = selectedFavoriteRecipe.ingredientLines  else { return 0 }
         return ingredients.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientsFavoritesCell", for: indexPath) as? IngredientTableViewCell else {
-            return UITableViewCell()
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath) as? RecipeIngredientsTableViewCell else {return UITableViewCell()}
         if let ingredients = selectedFavoriteRecipe.ingredientLines {
             let ingredient = ingredients[indexPath.row]
             cell.configure(title: ingredient)
         }
-        
         return cell
-        
     }
 }
 

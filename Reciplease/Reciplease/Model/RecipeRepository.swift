@@ -23,7 +23,6 @@ class RecipeRepositoryImplementation: RecipeRepository {
     }
     
     //MARK: - Methods
-    
     func getRecipes(ingredients: String, callback: @escaping (Result<[Recipe], Error>) -> Void) {
         networking.request(ingredients: ingredients) { (result) in
             switch result {
@@ -32,24 +31,19 @@ class RecipeRepositoryImplementation: RecipeRepository {
                     let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                     DispatchQueue.main.async {
                         callback(.success(searchResult.hits.map { $0.recipe }))
-                        
                     }
-                    
                 } catch {
                     DispatchQueue.main.async {
                         callback(.failure(error))
-                        
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     callback(.failure(error))
-                    
                 }
             }
         }
     }
-        
-    }
+}
 
 

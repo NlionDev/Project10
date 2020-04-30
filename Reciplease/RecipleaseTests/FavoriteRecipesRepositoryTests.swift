@@ -13,13 +13,11 @@ import CoreData
 class FavoriteRecipesRepositoryTests: XCTestCase {
     
     // MARK: - Properties
-    
     let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: MockPersistenceService.persistentContainer)
     var favoriteRecipes: [FavoriteRecipe] = []
     var favoriteRecipe: FavoriteRecipe!
     
     // MARK: - Lifecycle
-
     override func setUp() {
         do {
             favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes()
@@ -37,9 +35,7 @@ class FavoriteRecipesRepositoryTests: XCTestCase {
     
     
     // MARK: - Tests
-    
     func testRecipeShouldBeSavedInCoreData() {
-        
         // Given
         let name = "Chicken Potatoes"
         let uri = "id"

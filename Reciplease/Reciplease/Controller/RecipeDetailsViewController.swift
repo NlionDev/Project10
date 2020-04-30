@@ -12,20 +12,17 @@ import AlamofireImage
 class RecipeDetailsViewController: UIViewController {
 
     // MARK: - Properties
-    
     var recipe: Recipe!
     private let favoriteRecipesRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
     private var isFav = true
     
     // MARK: - Outlets
-    
     @IBOutlet weak private var timeLabel: UILabel!
     @IBOutlet weak private var recipeImageView: UIImageView!
     @IBOutlet weak private var detailsRecipeTableView: UITableView!
     @IBOutlet weak private var titleLabel: UILabel!
     
     // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
@@ -35,15 +32,13 @@ class RecipeDetailsViewController: UIViewController {
         } catch {
             self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
         }
+        nibRegister()
         configurePage()
         setupStarButton(title: "Reciplease", action: #selector(didTapOnStarButton))
         configureStarButtonColor()
-        
     }
     
-    
     // MARK: - Actions
-    
     @objc private func didTapOnStarButton() {
         if isFav {
             do {
@@ -62,6 +57,10 @@ class RecipeDetailsViewController: UIViewController {
     
     
     // MARK: - Methods
+    private func nibRegister() {
+        let ingredientCellNib = UINib(nibName: "RecipeIngredientsTableViewCell", bundle: nil)
+        detailsRecipeTableView.register(ingredientCellNib, forCellReuseIdentifier: "IngredientCell")
+    }
     
     private func configurePage() {
         let cookingTime = String(recipe.totalTime)
@@ -80,12 +79,9 @@ class RecipeDetailsViewController: UIViewController {
             self.navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
-    
 }
 
-
-// MARK: - Extensions
-
+// MARK: - Extension
 extension RecipeDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,21 +89,15 @@ extension RecipeDetailsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailsIngredientsCell", for: indexPath) as? IngredientTableViewCell else {
-            
-            return UITableViewCell()
-        }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath) as? RecipeIngredientsTableViewCell else {return UITableViewCell()}
         let ingredient = recipe.ingredientLines[indexPath.row]
-            cell.configure(title: ingredient)
-        
+        cell.configure(title: ingredient)
         return cell
-        
     }
 }
 
 extension RecipeDetailsViewController {
-    
+
     func setupStarButton(title: String, action: Selector) {
         self.navigationController?.navigationBar.topItem?.title = ""
         self.navigationItem.title = title

@@ -81,8 +81,6 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
         PersistenceService.saveContext()
     }
 
-    
-    
     func removeRecipe(by uri: String) throws {
         var favorites: [FavoriteRecipe] = []
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()

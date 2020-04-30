@@ -19,9 +19,7 @@ class PersistenceService {
     }
     
     // MARK: - Core Data stack
-    
     static var persistentContainer: NSPersistentContainer = {
-        
         let container = NSPersistentContainer(name: "Reciplease")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -32,7 +30,6 @@ class PersistenceService {
     }()
     
     // MARK: - Core Data Saving support
-    
     static func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {

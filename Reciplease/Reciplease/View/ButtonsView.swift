@@ -12,11 +12,9 @@ import UIKit
 class ButtonsView: UIButton {
     
     //MARK: - LifeCycle
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         configureButtonStyle()
-        
     }
     
     //MARK: - Methods

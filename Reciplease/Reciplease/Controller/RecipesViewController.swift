@@ -13,21 +13,17 @@ import AlamofireImage
 class RecipesViewController: UIViewController {
 
     //MARK: - Properties
-    
     private var recipeRepository = RecipeRepositoryImplementation(networking: NetworkingImplementation.shared)
     var recipes: [Recipe] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.recipesTableView.reloadData()
-                
             }
         }
     }
-    
     private var selectedRecipe: Recipe?
 
     //MARK: - Outlets
-    
     @IBOutlet weak private var recipesTableView: UITableView!
     
     //MARK: - Lifecycle
@@ -45,38 +41,26 @@ class RecipesViewController: UIViewController {
             destination.recipe = selectedRecipe
         }
     }
-    
-    //MARK: - Methods
-    
 }
 
-//MARK: - Extensions
-
+//MARK: - Extension
 extension RecipesViewController: UITableViewDataSource {
     
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipesCell", for: indexPath) as? RecipeTableViewCell else {
-            
-            return UITableViewCell()
-        }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipesCell", for: indexPath) as? RecipeTableViewCell else {return UITableViewCell()}
         let recipesTitle = recipes[indexPath.row].label
         let recipesTime = recipes[indexPath.row].totalTime
         let recipeImageURLString = recipes[indexPath.row].image
         cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
-
         return cell
-        
     }
 }
 
 extension RecipesViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRecipe = recipes[indexPath.row]
         performSegue(withIdentifier: "DetailsSegueFromResults", sender: self)

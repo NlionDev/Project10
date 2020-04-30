@@ -12,18 +12,15 @@ import AlamofireImage
 class FavoritesViewController: UIViewController {
     
     // MARK: - Properties
-    
     private var selectedRecipe: FavoriteRecipe?
     private var favoriteRecipes: [FavoriteRecipe] = []
     private let favoriteRecipeRepository = FavoriteRecipesRepositoryImplementation(container: PersistenceService.persistentContainer)
 
     // MARK: - Outlets
-    
     @IBOutlet weak private var favoriteTableView: UITableView!
     @IBOutlet weak private var favoritesLabel: UILabel!
     
     // MARK: - Lifecycle
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
           do {
@@ -46,7 +43,6 @@ class FavoritesViewController: UIViewController {
     }
     
     // MARK: - Methods
-    
     private func showFavoritesLabel() {
         if favoriteRecipes.isEmpty {
             favoriteTableView.isHidden = true
@@ -56,11 +52,9 @@ class FavoritesViewController: UIViewController {
             favoriteTableView.isHidden = false
         }
     }
-    
 }
 
 // MARK: - Extension
-
 extension FavoritesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,11 +62,7 @@ extension FavoritesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as? RecipeTableViewCell else {
-            
-            return UITableViewCell()
-        }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as? RecipeTableViewCell else {return UITableViewCell()}
         let recipesTitle = favoriteRecipes[indexPath.row].label
         let recipesTime = favoriteRecipes[indexPath.row].totalTime
         let recipeImageURLString = favoriteRecipes[indexPath.row].image
@@ -81,15 +71,12 @@ extension FavoritesViewController: UITableViewDataSource {
             cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
         }
         return cell
-        
     }
 }
 
 extension FavoritesViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRecipe = favoriteRecipes[indexPath.row]
-        
         performSegue(withIdentifier: "DetailsSegueFromFavorites", sender: self)
     }
     
@@ -103,9 +90,7 @@ extension FavoritesViewController: UITableViewDelegate {
                 } catch {
                     self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
                 }
-                
                 PersistenceService.saveContext()
-                
                 do {
                 favoriteRecipes = try favoriteRecipeRepository.getFavoriteRecipes()
                 } catch let error as FavoriteRecipeRequestError {
