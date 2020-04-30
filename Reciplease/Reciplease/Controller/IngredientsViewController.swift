@@ -13,8 +13,8 @@ class IngredientsViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let recipeRepository = RecipeRepositoryImplementation()
-    private let ingredientRepository = IngredientsRepositoryImplementation()
+    private let recipeRepository = RecipeRepositoryImplementation(networking: NetworkingImplementation.shared)
+    private let ingredientRepository = IngredientsRepositoryImplementation(container: PersistenceService.persistentContainer)
     private var recipes: [Recipe] = []
     private var ingredients: [Ingredient] = []
     private var ingredientsName: [String] = []
@@ -50,6 +50,7 @@ class IngredientsViewController: UIViewController {
     
     @IBAction private func didTapSearchButton(_ sender: Any) {
         activityIndicator.isHidden = false
+        ingredientTableView.isHidden = true
         let ingredients = joinIngredients()
         
         recipeRepository.getRecipes(ingredients: ingredients) { (result) in
@@ -58,6 +59,7 @@ class IngredientsViewController: UIViewController {
                 self.recipes = searchResult
                 self.performSegue(withIdentifier: "RecipeSegue", sender: nil)
                 self.activityIndicator.isHidden = true
+                self.ingredientTableView.isHidden = false
             case .failure(_):
                 self.presentAlert(alertTitle: "Error", message: "The recipes download fail.", actionTitle: "OK")
             }
@@ -69,7 +71,7 @@ class IngredientsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ingredientsTextField.clearsOnBeginEditing = true
-
+        nibRegister()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,6 +88,10 @@ class IngredientsViewController: UIViewController {
     }
     
     //MARK: - Methods
+    private func nibRegister() {
+        let ingredientCellNib = UINib(nibName: "RecipeIngredientsTableViewCell", bundle: nil)
+        ingredientTableView.register(ingredientCellNib, forCellReuseIdentifier: "IngredientCell")
+    }
     
     private func joinIngredients() -> String {
        let allIngredients = ingredientsName.joined(separator: ",")
@@ -119,15 +125,10 @@ extension IngredientsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath) as? IngredientTableViewCell else {
-            return UITableViewCell()
-        }
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath) as? RecipeIngredientsTableViewCell else {return UITableViewCell()}
         let ingredient = ingredientsName[indexPath.row]
         cell.configure(title: ingredient)
-        
         return cell
-        
     }
 }
 

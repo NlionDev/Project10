@@ -11,13 +11,11 @@ import UIKit
 class RecipeTableViewCell: UITableViewCell {
 
     //MARK: - Outlets
-    
     @IBOutlet weak private var recipeImage: UIImageView!
     @IBOutlet weak private var recipesLabel: UILabel!
     @IBOutlet weak private var cookingTimeLabel: UILabel!
     
     //MARK: - Methods
-    
     func configure(title: String, time: Int, imageURLString: String) {
         let cookingTime = String(time)
         recipesLabel.text = title

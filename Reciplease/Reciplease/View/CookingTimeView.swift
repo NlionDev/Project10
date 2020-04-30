@@ -11,11 +11,13 @@ import UIKit
 
 class CookingTimeView: UIView {
     
+    //MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }
     
+    //MARK: - Methods
     private func configureView() {
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 1

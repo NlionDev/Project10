@@ -19,16 +19,30 @@ protocol IngredientsRepository {
 enum IngredientRequestError: Error {
     case requestForIngredientsNamesError
     case requestForIngredientsError
-
 }
 
 class IngredientsRepositoryImplementation: IngredientsRepository {
+    
+    let persistentContainer: NSPersistentContainer
+    
+    lazy var backgroundContext: NSManagedObjectContext = {
+        return self.persistentContainer.newBackgroundContext()
+    }()
+    
+    init(container: NSPersistentContainer) {
+        self.persistentContainer = container
+        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+    }
+    
+    convenience init() {
+        self.init(container: PersistenceService.persistentContainer)
+    }
     
     func makeFetchRequestForNames() throws -> [String] {
         var ingredients: [String] = []
         let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
         do {
-            let savedIngredients = try PersistenceService.context.fetch(fetchRequest)
+            let savedIngredients = try persistentContainer.viewContext.fetch(fetchRequest)
             for ingredient in savedIngredients {
                 if let ingredientName = ingredient.name {
                     ingredients.append(ingredientName)
@@ -44,7 +58,7 @@ class IngredientsRepositoryImplementation: IngredientsRepository {
         var ingredients: [Ingredient] = []
         let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
         do {
-            let savedIngredients = try PersistenceService.context.fetch(fetchRequest)
+            let savedIngredients = try persistentContainer.viewContext.fetch(fetchRequest)
             ingredients = savedIngredients
         } catch {
             throw IngredientRequestError.requestForIngredientsError
@@ -53,14 +67,14 @@ class IngredientsRepositoryImplementation: IngredientsRepository {
     }
     
     func saveIngredient(name: String) {
-        let ingredient = Ingredient(context: PersistenceService.context)
+        let ingredient = Ingredient(context: persistentContainer.viewContext)
         ingredient.name = name
-        PersistenceService.saveContext()
+        try! backgroundContext.save()
     }
     
     func removeIngredient(ingredient: Ingredient) {
-        PersistenceService.context.delete(ingredient)
-        PersistenceService.saveContext()
+        persistentContainer.viewContext.delete(ingredient)
+        try! backgroundContext.save()
     }
 
 }
