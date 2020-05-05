@@ -13,7 +13,7 @@ import UIKit
 protocol FavoriteRecipesRepository {
     func getFavoriteRecipes() throws -> [FavoriteRecipe]
     func getFavoriteRecipe(by uri: String) throws-> FavoriteRecipe?
-    func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String)
+    func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String, url: String)
     func removeRecipe(by uri: String) throws
 }
 
@@ -71,13 +71,14 @@ class FavoriteRecipesRepositoryImplementation: FavoriteRecipesRepository {
         
     }
     
-    func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String) {
+    func addRecipeToFavorite(totalTime: Int, image: String, label: String, ingredientLines: [String], uri: String, url: String) {
         let favoriteRecipe = FavoriteRecipe(context: persistentContainer.viewContext)
         favoriteRecipe.totalTime = totalTime
         favoriteRecipe.image = image
         favoriteRecipe.label = label
         favoriteRecipe.ingredientLines = ingredientLines
         favoriteRecipe.uri = uri
+        favoriteRecipe.url = url
         PersistenceService.saveContext()
     }
 

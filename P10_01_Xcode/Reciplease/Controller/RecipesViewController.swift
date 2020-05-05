@@ -31,7 +31,6 @@ class RecipesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         recipesTableView.dataSource = self
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -55,7 +54,15 @@ extension RecipesViewController: UITableViewDataSource {
         let recipesTitle = recipes[indexPath.row].label
         let recipesTime = recipes[indexPath.row].totalTime
         let recipeImageURLString = recipes[indexPath.row].image
-        cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
+        let ingredientsList = recipes[indexPath.row].ingredientLines
+        var allIngredients = [String]()
+        for ingredient in ingredientsList {
+            let firstComma = ingredient.firstIndex(of: ",") ?? ingredient.endIndex
+            let ingredientToDisplay = ingredient[..<firstComma]
+            allIngredients.append(String(ingredientToDisplay))
+        }
+        let ingredientsListToDisplay = allIngredients.joined(separator: ", ")
+        cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString, ingredients: ingredientsListToDisplay)
         return cell
     }
 }

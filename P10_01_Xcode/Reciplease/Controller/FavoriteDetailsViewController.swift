@@ -25,6 +25,7 @@ class FavoriteDetailsViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        nibRegister()
         DispatchQueue.main.async {
             self.favoriteDetailsTableView.reloadData()
             if let uri = self.selectedFavoriteRecipe.uri {
@@ -36,7 +37,7 @@ class FavoriteDetailsViewController: UIViewController {
                     self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
                 }
             }
-            self.nibRegister()
+            
             self.configurePage()
             self.setupStarButton(title: "Reciplease", action: #selector(self.didTapOnStarButton))
             self.configureStarButtonColor()
@@ -59,12 +60,21 @@ class FavoriteDetailsViewController: UIViewController {
             if let image = selectedFavoriteRecipe.image,
                 let label = selectedFavoriteRecipe.label,
                 let ingredientLines = selectedFavoriteRecipe.ingredientLines,
+                let url = selectedFavoriteRecipe.url,
                 let uri = selectedFavoriteRecipe.uri {
-                favoriteRecipesRepository.addRecipeToFavorite(totalTime: selectedFavoriteRecipe.totalTime, image: image, label: label, ingredientLines: ingredientLines, uri: uri)
+                favoriteRecipesRepository.addRecipeToFavorite(totalTime: selectedFavoriteRecipe.totalTime, image: image, label: label, ingredientLines: ingredientLines, uri: uri, url: url)
             }
         }
         isFav.toggle()
         configureStarButtonColor()
+    }
+    
+    @IBAction func didTapOnGetDirectionsButton(_ sender: Any) {
+        guard let directionUrl = selectedFavoriteRecipe.url else {return}
+        let url = URL(string: directionUrl)
+        if let url = url {
+        UIApplication.shared.open(url)
+        }
     }
     
     // MARK: - Methods

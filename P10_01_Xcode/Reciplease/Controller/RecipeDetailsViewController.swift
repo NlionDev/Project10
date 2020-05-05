@@ -49,12 +49,18 @@ class RecipeDetailsViewController: UIViewController {
                 self.presentAlert(alertTitle: "Error", message: "Unknow error", actionTitle: "error")
             }
         } else {
-            favoriteRecipesRepository.addRecipeToFavorite(totalTime: recipe.totalTime, image: recipe.image, label: recipe.label, ingredientLines: recipe.ingredientLines, uri: recipe.uri)
+            favoriteRecipesRepository.addRecipeToFavorite(totalTime: recipe.totalTime, image: recipe.image, label: recipe.label, ingredientLines: recipe.ingredientLines, uri: recipe.uri, url: recipe.url)
         }
         isFav.toggle()
         configureStarButtonColor()
     }
     
+    @IBAction func didTapOnGetDirectionsButton(_ sender: Any) {
+        let url = URL(string: recipe.url)
+        if let url = url {
+        UIApplication.shared.open(url)
+        }
+    }
     
     // MARK: - Methods
     private func nibRegister() {

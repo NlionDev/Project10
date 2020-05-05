@@ -66,9 +66,19 @@ extension FavoritesViewController: UITableViewDataSource {
         let recipesTitle = favoriteRecipes[indexPath.row].label
         let recipesTime = favoriteRecipes[indexPath.row].totalTime
         let recipeImageURLString = favoriteRecipes[indexPath.row].image
+        let ingredientsList = favoriteRecipes[indexPath.row].ingredientLines
+        var allIngredients = [String]()
+        if let ingredientsList = ingredientsList {
+            for ingredient in ingredientsList {
+                let firstComma = ingredient.firstIndex(of: ",") ?? ingredient.endIndex
+                let ingredientToDisplay = ingredient[..<firstComma]
+                allIngredients.append(String(ingredientToDisplay))
+            }
+        }
+        let ingredientsListToDisplay = allIngredients.joined(separator: ", ")
         if let recipesTitle = recipesTitle,
             let recipeImageURLString = recipeImageURLString {
-            cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString)
+            cell.configure(title: recipesTitle, time: recipesTime, imageURLString: recipeImageURLString, ingredients: ingredientsListToDisplay)
         }
         return cell
     }
